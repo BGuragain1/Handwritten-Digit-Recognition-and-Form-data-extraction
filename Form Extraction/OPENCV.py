@@ -23,37 +23,46 @@ contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_S
 # Filter for box-like contours
 box_contours = []
 for cnt in contours:
-    # Approximate the contour with a polygon
-    approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
+  # Approximate the contour with a polygon
+  approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
 
-    # Check if the approximation has 4 sides (indicating a box)
-    if len(approx) == 4 and  cv2.contourArea(cnt) > 20000:  # Modified area condition
-        box_contours.append(cnt)
+  # Check if they approximation has 4 sides (indicating a box)
+  if len(approx) == 4 and cv2.contourArea(cnt) > 10000:
+    box_contours.append(cnt)
+
+# Apply Non-Maximal Suppression (NMS)
+def nms(contours, area_thr=0.5):
+    bounding_boxes = [cv2.boundingRect(cnt) for cnt in contours]
+
+    # Get areas and scores (use area as a score here, adapt based on your needs)
+    areas = [cv2.contourArea(cnt) for cnt in contours]
+    scores = areas
+
+    # Perform Non-Maximum Suppression (NMS)
+    kept_indices = cv2.dnn.NMSBoxes(bounding_boxes, scores, 0.5, area_thr)
+
+    # Return the kept contours based on indices
+    return [contours[i] for i in kept_indices]
+
+# Filter overlapping boxes with NMS
+kept_box_contours = nms(box_contours)
 
 # Process the identified box contours
-print(f"Number of box contours: {len(box_contours)}")
-for cnt in box_contours:
-    # Get bounding box coordinates
-    x, y, w, h = cv2.boundingRect(cnt)
+print(f"Number of box contours after NMS: {len(kept_box_contours)}")
 
-    # Extract the image segment using NumPy slicing
-    box_image = img[y:y+h, x:x+w]
+for cnt in kept_box_contours:
+  # Get bounding box coordinates
+  x, y, w, h = cv2.boundingRect(cnt)
 
-    # Display the extracted box image (optional)
-    cv2_imshow(box_image)
+  # Extract the image segment using NumPy slicing
+  box_image = img[y:y+h, x:x+w]
+
+  # Display the extracted box image (optional)
+  cv2_imshow(box_image)
 
 # Optional: Draw the box contours on the original image
-cv2.drawContours(img, box_contours, -1, (0, 255, 0), 2)  # Green outline for boxes
+cv2.drawContours(img, kept_box_contours, -1, (0, 255, 0), 2)  # Green outline for boxes
 
 # Display the image with box contours
 cv2_imshow(img)
-
-cmnt = box_contours[-1]
-cmnt.shape
-
-cmnt[1]
-
-cmnt[2]
-
-cmnt[0]
 
