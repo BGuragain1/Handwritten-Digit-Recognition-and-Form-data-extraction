@@ -12,25 +12,30 @@ import numpy as np
 from google.colab.patches import cv2_imshow
 
 # Load and preprocess the image
-img = cv2.imread("test1.jpg")
+img = cv2.imread("test3.jpg")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-kernel = np.ones((4,4),np.uint8)
-# Apply Canny edge detection
-edges = cv2.Canny(gray, 100, 100)  # Adjust thresholds if needed
 
+def otsu_threshold(image):
+  _, threshold = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+  return threshold
+
+img0 = otsu_threshold(gray)
+kernel = np.ones((4,4),np.uint8)
+img1 = cv2.GaussianBlur(img0, (5,5), 1.5)
+# Apply Canny edge detection
+edges = cv2.Canny(img1, 100, 100)  # Adjust thresholds if needed
 contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 
 # Filter for box-like contours
 box_contours = []
 for cnt in contours:
-  # Approximate the contour with a polygon
-  approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
+    # Approximate the contour with a polygon
+    approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
 
-  # Check if they approximation has 4 sides (indicating a box)
-  if len(approx) == 4 and cv2.contourArea(cnt) > 10000:
-    box_contours.append(cnt)
+    # Check if the approximation has 4 sides (indicating a box)
+    if len(approx) == 4 and cv2.contourArea(cnt) > 10000:
+        box_contours.append(cnt)
 
-# Apply Non-Maximal Suppression (NMS)
 def nms(contours, area_thr=0.5):
     bounding_boxes = [cv2.boundingRect(cnt) for cnt in contours]
 
@@ -44,24 +49,21 @@ def nms(contours, area_thr=0.5):
     # Return the kept contours based on indices
     return [contours[i] for i in kept_indices]
 
-# Filter overlapping boxes with NMS
 kept_box_contours = nms(box_contours)
-
 # Process the identified box contours
-print(f"Number of box contours after NMS: {len(kept_box_contours)}")
-
+print(f"Number of box contours: {len(kept_box_contours)}")
 for cnt in kept_box_contours:
-  # Get bounding box coordinates
-  x, y, w, h = cv2.boundingRect(cnt)
+    # Get bounding box coordinates
+    x, y, w, h = cv2.boundingRect(cnt)
 
-  # Extract the image segment using NumPy slicing
-  box_image = img[y:y+h, x:x+w]
+    # Extract the image segment using NumPy slicing
+    box_image = img[y:y+h, x:x+w]
 
-  # Display the extracted box image (optional)
-  cv2_imshow(box_image)
+    # Display the extracted box image (optional)
+    # cv2_imshow(box_image)
 
 # Optional: Draw the box contours on the original image
-cv2.drawContours(img, kept_box_contours, -1, (0, 255, 0), 2)  # Green outline for boxes
+cv2.drawContours(img, box_contours, -1, (0, 255, 0), 2)  # Green outline for boxes
 
 # Display the image with box contours
 cv2_imshow(img)
