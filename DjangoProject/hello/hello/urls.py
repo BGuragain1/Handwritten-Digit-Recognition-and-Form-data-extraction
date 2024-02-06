@@ -1,5 +1,5 @@
 """
-URL configuration for hello project.
+URL configuration for Hello project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -15,8 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+admin.site.site_header = "Bigyan Cube Admin"
+admin.site.site_title = "Bigyan Cube Admin Portal"
+admin.site.index_title = "Welcome to Bigyan Cube Portal"
+
 
 urlpatterns = [
+    #if someones writes/admin then send it to admin page
     path('admin/', admin.site.urls),
+    #sends to the urls.py at home which is a app if there is a blank request
+    path('',include('home.urls')),
 ]
