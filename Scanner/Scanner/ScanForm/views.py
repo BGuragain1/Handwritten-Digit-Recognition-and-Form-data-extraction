@@ -28,7 +28,16 @@ def signup(request):
     return render(request,"signup.html")
 
 def logout(request):
-    return render(request,"login.html")
+    return render(request,"index.html")
 
 def homePage(request):
     return render(request,"home.html")
+
+def about(request):
+    return render(request,"about.html")
+    
+def feedback(request):
+    return render(request,"feedback.html")
+
+def base(request):
+    return render(request, "base.html")
