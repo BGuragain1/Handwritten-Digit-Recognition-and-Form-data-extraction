@@ -9,9 +9,10 @@
     <style>
         /* Style for the profile section */
         .profile-section {
+            margin-right: 30px;
             padding: 5px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 2px;
         }
     </style>
 </head>
@@ -39,7 +40,7 @@
             <div class="profile-section">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        John Doe
+                        {{userInfo.username}}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="/settings">Settings</a>
@@ -49,6 +50,7 @@
             </div>
         </div>
     </nav>
+    
     {% block body %}{% endblock body %}
     <!-- Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
