@@ -59,9 +59,9 @@ def gettingform(corners,imgThres):
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
     imgWarpColored = cv2.warpPerspective(imgThres, matrix, (widthImg, heightImg))
 
-    # REMOVE 20 PIXELS FORM EACH SIDE
-    imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] - 20, 20:imgWarpColored.shape[1] - 20]
-    imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
+    # # REMOVE 20 PIXELS FORM EACH SIDE
+    # imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] - 20, 20:imgWarpColored.shape[1] - 20]
+    # imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
 
     #converting to black amd white
     imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
@@ -89,16 +89,15 @@ def reorder(myPoints):
 
     return myPointsNew
 
-heightImg = 1500
-widthImg = 1500
+heightImg = 800
+widthImg = 800
 kernel = np.ones((5,5),np.uint8)
 
-image = cv2.imread("Forms/base.jpg")
+image = cv2.imread("Forms/basec.jpg")
 grayImage,imgThreshold = preprocessImage(image)
 finalCorners = EdgeDetection(grayImage,imgThreshold)
 finalImage = gettingform(finalCorners,imgThreshold)
 
 cv2.imshow("second",finalImage)
-cv2.imwrite("../OPENCV/Forms/output_image.jpg", finalImage)
+cv2.imwrite("Forms/output_image.jpg", finalImage)
 cv2.waitKey(0)
-
