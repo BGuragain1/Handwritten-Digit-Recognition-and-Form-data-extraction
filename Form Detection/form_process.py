@@ -65,16 +65,12 @@ def gettingform(corners,imgThres):
 
     #converting to black amd white
     imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
-
-    #Apply adaptive thresholding with a lower block size and a higher constant value to decrease the number of dots
+    #
+    # #Apply adaptive thresholding with a lower block size and a higher constant value to decrease the number of dots
     imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 13, 9)
-
-    # Invert the binary image
+    #
+    # # Invert the binary image
     imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
-
-    # Apply median blur with a larger kernel size to remove noise
-    imgAdaptiveThre = cv2.medianBlur(imgAdaptiveThre, 3)
-
     return imgAdaptiveThre
 def reorder(myPoints):
     myPoints = myPoints.reshape((4, 2))
@@ -89,11 +85,11 @@ def reorder(myPoints):
 
     return myPointsNew
 
-heightImg = 800
-widthImg = 800
+heightImg = 1000
+widthImg = 1000
 kernel = np.ones((5,5),np.uint8)
 
-image = cv2.imread("Forms/basec.jpg")
+image = cv2.imread("Forms/2.jpg")
 grayImage,imgThreshold = preprocessImage(image)
 finalCorners = EdgeDetection(grayImage,imgThreshold)
 finalImage = gettingform(finalCorners,imgThreshold)

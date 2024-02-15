@@ -12,7 +12,7 @@ Name can be anything
 import cv2
 import random
 
-path = 'segment_1.jpg'
+path ='Forms/finalImage.jpg'
 scale = 0.5
 circles = []
 counter = 0

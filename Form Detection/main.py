@@ -1,51 +1,45 @@
 import cv2
 import numpy as np
 
-# Load and preprocess the image
-img = cv2.imread("Forms/baseimage1.jpeg")
-img = cv2.resize(img, (500, 500))
-img_another = img.copy()
-img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-img = cv2.equalizeHist(img)
-img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-kernel = np.ones((4, 4), np.uint8)
-img1 = cv2.GaussianBlur(gray, (5, 5), 1)
+# Load the image
+image = cv2.imread("Forms/output_image.jpg")
 
-# Apply Canny edge detection
-edges = cv2.Canny(img1, 100, 100)  # Adjust thresholds if needed
-contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+# Resize the image to a manageable size
+# image = cv2.resize(image, (1000, 1500))
 
-# Filter for box-like contours
-box_contours = []
-for cnt in contours:
-    # Approximate the contour with a polygon
-    approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
+# Convert the image to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Check if the approximation has 4 sides (indicating a box)
-    if len(approx) == 4 and cv2.contourArea(cnt) > 10000:
-        box_contours.append(cnt)
+# Apply Gaussian blur to reduce noise
+blurred = cv2.GaussianBlur(gray, (5, 5), 1)
 
-# Sort box contours based on their areas in descending order
-box_contours.sort(key=cv2.contourArea, reverse=True)
+# Perform edge detection using Canny
+edges = cv2.Canny(blurred, 100, 100)
 
-biggest_contours = box_contours[:1]
+# Find contours in the edge-detected image
+contours, _ = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-# Save the cropped segments corresponding to the biggest contours as individual images
-for idx, cnt in enumerate(biggest_contours):
-    # Get bounding box coordinates
-    x, y, w, h = cv2.boundingRect(cnt)
-    x_max = x + w
-    y_max = y + h
+# Find the contour with the maximum area
+max_contour = max(contours, key=cv2.contourArea)
 
-    box_image = img_another[y:y_max,x:x_max]
+# Get the bounding box coordinates of the largest contour
+x, y, w, h = cv2.boundingRect(max_contour)
 
-    cv2.imshow("Image", box_image)
-    cv2.waitKey(0)
+# Define the margin to remove (in this case, 20 pixels)
+margin = 20
 
-# Optional: Draw the biggest contours on the original image
-cv2.drawContours(img, biggest_contours, -1, (0, 255, 0), 2)  # Green outline for biggest contours
+# Adjust the bounding box coordinates
+x += margin
+y += margin
+w -= 2 * margin
+h -= 2 * margin
 
-# Display the image with biggest contours
-cv2.imshow("Image", img)
+# Crop the region of interest (ROI) from the original image
+cropped_image = image[y:y+h, x:x+w]
+
+cropped_image = cv2.resize(cropped_image,(700,700))
+# Display the cropped image
+cv2.imshow("Cropped Image", cropped_image)
+cv2.imwrite("Forms/finalImage.jpg", cropped_image)
 cv2.waitKey(0)
+cv2.destroyAllWindows()
