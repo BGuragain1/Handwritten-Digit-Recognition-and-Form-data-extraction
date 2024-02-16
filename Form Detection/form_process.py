@@ -85,7 +85,7 @@ def reorder(myPoints):
 
     return myPointsNew
 
-heightImg = 1000
+heightImg = 1500
 widthImg = 1000
 kernel = np.ones((5,5),np.uint8)
 
@@ -95,5 +95,5 @@ finalCorners = EdgeDetection(grayImage,imgThreshold)
 finalImage = gettingform(finalCorners,imgThreshold)
 
 cv2.imshow("second",finalImage)
-cv2.imwrite("Forms/output_image.jpg", finalImage)
+cv2.imwrite("Forms/output_image1.jpg", finalImage)
 cv2.waitKey(0)

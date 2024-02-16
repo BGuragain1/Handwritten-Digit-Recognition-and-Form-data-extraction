@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 
 # Load the image
-image = cv2.imread("Forms/output_image.jpg")
+image = cv2.imread("Forms/output_image3.jpg")
 
 # Resize the image to a manageable size
-# image = cv2.resize(image, (1000, 1500))
+image = cv2.resize(image, (1000, 1500))
 
 # Convert the image to grayscale
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -37,9 +37,9 @@ h -= 2 * margin
 # Crop the region of interest (ROI) from the original image
 cropped_image = image[y:y+h, x:x+w]
 
-cropped_image = cv2.resize(cropped_image,(700,700))
+cropped_image2 = cv2.resize(cropped_image,(700,700))
 # Display the cropped image
-cv2.imshow("Cropped Image", cropped_image)
-cv2.imwrite("Forms/finalImage.jpg", cropped_image)
+cv2.imshow("Cropped Image", cropped_image2)
+cv2.imwrite("Forms/finalImage3.jpg", cropped_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

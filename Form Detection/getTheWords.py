@@ -12,7 +12,7 @@ Name can be anything
 import cv2
 import random
 
-path ='Boxes/446.jpg'
+path ='Boxes/24.jpg'
 scale = 0.5
 circles = []
 counter = 0
@@ -39,7 +39,7 @@ def mousePoints(event,x,y,flags,params):
         counter2 += 1
 
 img = cv2.imread(path)
-img = cv2.resize(img, (650, 700))
+img = cv2.resize(img, (422, 78))
 
 
 while True:
