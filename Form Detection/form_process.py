@@ -42,10 +42,6 @@ def EdgeDetection(gray,img):
         # If our approximated contour has four points
         if len(corners) == 4 and cv2.contourArea(c) > 10000:
             break
-
-    # cv2.drawContours(con, c, -1, (0, 255, 255), 3)
-    # cv2.drawContours(con, corners, -1, (0, 255, 0), 10)
-
     return corners
 
 def gettingform(corners,imgThres):
@@ -59,19 +55,20 @@ def gettingform(corners,imgThres):
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
     imgWarpColored = cv2.warpPerspective(imgThres, matrix, (widthImg, heightImg))
 
-    # # REMOVE 20 PIXELS FORM EACH SIDE
-    # imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] - 20, 20:imgWarpColored.shape[1] - 20]
-    # imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
+    # REMOVE 20 PIXELS FORM EACH SIDE
+    imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] - 20, 20:imgWarpColored.shape[1] - 20]
+    imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
 
     #converting to black amd white
     imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
-    #
+
     # #Apply adaptive thresholding with a lower block size and a higher constant value to decrease the number of dots
     imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 13, 9)
-    #
-    # # Invert the binary image
+
+    # Invert the binary image
     imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
     return imgAdaptiveThre
+
 def reorder(myPoints):
     myPoints = myPoints.reshape((4, 2))
     myPointsNew = np.zeros((4, 1, 2), dtype=np.int32)
@@ -89,11 +86,11 @@ heightImg = 1500
 widthImg = 1000
 kernel = np.ones((5,5),np.uint8)
 
-image = cv2.imread("Forms/2.jpg")
+image = cv2.imread("Forms/6.jpg")
 grayImage,imgThreshold = preprocessImage(image)
 finalCorners = EdgeDetection(grayImage,imgThreshold)
 finalImage = gettingform(finalCorners,imgThreshold)
 
 cv2.imshow("second",finalImage)
-cv2.imwrite("Forms/output_image1.jpg", finalImage)
+cv2.imwrite("Forms/output_image3.jpg", finalImage)
 cv2.waitKey(0)

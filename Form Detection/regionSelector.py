@@ -8,11 +8,12 @@ and the Name:
 Type can be 'Text' or 'CheckBox'
 Name can be anything
 """
+# [[(70, 230), (112, 274)], [(114, 228), (154, 274)], [(154, 230), (194, 276)], [(194, 230), (234, 278)], [(234, 228), (276, 278)], [(276, 228), (316, 276)], [(312, 226), (356, 274)], [(356, 226), (396, 274)], [(394, 228), (434, 274)]]
 
 import cv2
 import random
 
-path ='Boxes/446.jpg'
+path ='Forms/output_image.jpg'
 scale = 0.5
 circles = []
 counter = 0
@@ -40,7 +41,6 @@ def mousePoints(event,x,y,flags,params):
 
 img = cv2.imread(path)
 img = cv2.resize(img, (650, 700))
-
 
 while True:
     # To Display points
