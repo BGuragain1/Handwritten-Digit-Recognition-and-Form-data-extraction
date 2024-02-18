@@ -1,8 +1,10 @@
 import cv2
 import numpy as np
 
-def alignForm(image1, image2):
+def alignForm(image2):
     # Convert images to grayscale
+    image1 = cv2.imread('Forms/output_image2.jpg')
+
     gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
     gray2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
 
@@ -28,16 +30,17 @@ def alignForm(image1, image2):
     # Calculate transformation matrix
     transformation_matrix, _ = cv2.findHomography(points2, points1, cv2.RANSAC)
 
-
     # Apply transformation to form2
     aligned_image = cv2.warpPerspective(image2, transformation_matrix, (image1.shape[1], image1.shape[0]))
 
     # Show the result
     cv2.imshow('Aligned Image', aligned_image)
-    cv2.imwrite('Forms/Aligned_Image2_8bit.jpg', aligned_image)
+    cv2.imwrite('Forms/Aligned_Image.jpg', aligned_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-image1 = cv2.imread('Forms/output_image.jpg')
-image2 = cv2.imread('Forms/output_image3.jpg')
-alignForm(image1, image2)
+def main():
+    alignForm(cv2.imread('Forms/output_image2.jpg'))
+
+if __name__ == "__main__":
+    main()

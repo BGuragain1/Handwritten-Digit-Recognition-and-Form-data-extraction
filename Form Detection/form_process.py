@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import alignForm as af
 def preprocessImage(img):
     # resizing the image
     img = cv2.resize(img, (heightImg, widthImg))
@@ -82,15 +82,22 @@ def reorder(myPoints):
 
     return myPointsNew
 
-heightImg = 1500
+
+heightImg = 1000
 widthImg = 1000
-kernel = np.ones((5,5),np.uint8)
+kernel = np.ones((5, 5), np.uint8)
+def preprocess_image(imagePath):
+    image = cv2.imread(imagePath)
+    grayImage,imgThreshold = preprocessImage(image)
+    finalCorners = EdgeDetection(grayImage,imgThreshold)
+    finalImage = gettingform(finalCorners,imgThreshold)
 
-image = cv2.imread("Forms/6.jpg")
-grayImage,imgThreshold = preprocessImage(image)
-finalCorners = EdgeDetection(grayImage,imgThreshold)
-finalImage = gettingform(finalCorners,imgThreshold)
+    output_image = af.alignForm(finalImage)
+    cv2.imshow("second",output_image)
+    cv2.waitKey(0)
 
-cv2.imshow("second",finalImage)
-cv2.imwrite("Forms/output_image3.jpg", finalImage)
-cv2.waitKey(0)
+def main():
+    preprocess_image()
+
+if __name__ == "__main__":
+    main()
