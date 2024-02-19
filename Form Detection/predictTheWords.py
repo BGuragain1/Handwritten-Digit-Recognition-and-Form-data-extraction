@@ -1,18 +1,30 @@
-import cv2
-from tensorflow.keras.models import load_model
+import tensorflow as tf
 import numpy as np
+import cv2
 
-model = load_model('characters_model.h5')
+model = tf.keras.models.load_model('digits_model.h5')
+# arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "d", "e", "f", "g", "h", "n", "q", "r", "t"]
 
-def predict(image):
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
-    img = cv2.resize(gray_image, (28, 28))
-    img = img.reshape((1,28,28,1))
-    processed_image = img.astype('float32') / 255.0  # Normalize to [0, 1]
-    predictions = model.predict(processed_image)
-    pr = np.argmax(predictions)
-    print(pr)
+def image_preprocess(input_img):
 
-def main():
-    predict(image)
+  resized_image = cv2.resize(input_img, (28, 28))
+
+  gray_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+
+  normalized_image = np.array(gray_image) / 255.0
+
+  reshaped_image = normalized_image.reshape((1, 28, 28, 1))
+
+  return reshaped_image
+
+def image_prediction(img):
+
+  image = image_preprocess(img)
+
+  prediction = model.predict(image)
+
+  ans = np.argmax(prediction)
+
+  print(ans)
+  # print(f"The prediction of image is {arr[ans]}")
 
