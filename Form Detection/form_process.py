@@ -83,19 +83,18 @@ def reorder(myPoints):
     return myPointsNew
 
 
-heightImg = 1000
+heightImg = 1500
 widthImg = 1000
 kernel = np.ones((5, 5), np.uint8)
-def preprocess_image(imagePath):
-    image = cv2.imread(imagePath)
+def preprocess_image(image):
     grayImage,imgThreshold = preprocessImage(image)
     finalCorners = EdgeDetection(grayImage,imgThreshold)
     finalImage = gettingform(finalCorners,imgThreshold)
 
     output_image = af.alignForm(finalImage)
-    cv2.imshow("second",output_image)
-    cv2.waitKey(0)
-
+    return output_image
+    # cv2.imshow("second",output_image)
+    # cv2.waitKey(0)
 def main():
     preprocess_image()
 
