@@ -2,11 +2,6 @@ import cv2
 import RegionOfInterest as rn
 import predictTheWords as pw
 import numpy as np
-
-# # Load the image
-# image = cv2.imread("Forms/Aligned_Image2_8bit.jpg")
-# image = cv2.resize(image, (650*2, 700*2))
-
 class getTheWords():
 
     def __init__(self,image):
@@ -24,12 +19,11 @@ class getTheWords():
 
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
-            print(np.sum(cropped_image))
-            if np.sum(cropped_image) > 2000:
+            if np.sum(cropped_image) < 250000:
                 word = pw.image_prediction(cropped_image)
                 final_word.append(word)
-                cv2.imshow("Image",cropped_image)
-                cv2.waitKey(0)
+                # cv2.imshow("Image",cropped_image)
+                # cv2.waitKey(0)
 
         return ''.join(final_word)
 
@@ -44,8 +38,10 @@ class getTheWords():
 
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
-            word = pw.image_prediction(cropped_image)
-            final_word.append(word)
+            print(np.sum(cropped_image))
+            if np.sum(cropped_image) < 250000:
+                word = pw.image_prediction(cropped_image)
+                final_word.append(word)
             # cv2.imshow("Image",cropped_image)
             # cv2.waitKey(0)
 
@@ -314,7 +310,7 @@ class getTheWords():
 
         # Find contours in the binary image
         contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sort_contours(contours, method="left-to-right")[0]
+        # contours = sort_contours(contours, method="left-to-right")[0]
         # Iterate through each contour
         for contour in contours:
             # Get bounding box coordinates
@@ -421,4 +417,10 @@ class getTheWords():
             # cv2.waitKey(0)
         return ''.join(final_word)
 
+def main():
+    image = cv2.imread("Forms/Aligned_Image1_8bit.jpg")
+    getter = getTheWords(image)
+    print(getter.getEmail())
 
+if __name__ == "__main__":
+    main()

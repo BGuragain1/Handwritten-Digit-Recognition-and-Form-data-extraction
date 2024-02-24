@@ -96,7 +96,8 @@ def preprocess_image(image):
     # cv2.imshow("second",output_image)
     # cv2.waitKey(0)
 def main():
-    preprocess_image()
+    final = preprocess_image(cv2.imread("Forms/1.jpg"))
+    cv2.imshow("Aligned Image",final)
 
 if __name__ == "__main__":
     main()

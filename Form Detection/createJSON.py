@@ -1,9 +1,10 @@
+import cv2
+
 from getTheBox import getTheWords
 import json
 
 def createJSON(image):
     gb = getTheWords(image)
-
     data = {
         "personal_info": {
             "first_name": gb.getFirstName(),
@@ -42,3 +43,9 @@ def createJSON(image):
     # Convert data to JSON format
     json_data = json.dumps(data, indent=4)
     return json_data
+
+def main():
+    createJSON(cv2.imread("Forms/Aligned_Image1_8bit.jpg"))
+
+if __name__ == "__main__":
+    main()
