@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Form Page{% endblock title %}
+{% block body %}
+    <style>
+        .right-image {
+            float: right; /* Float the image to the right */
+            height: 570px; /* Set the height */
+            width: 540px; /* Set the width */
+            margin-left: 10px; /* Optional: Add some space between the image and other content */
+        }
+    </style>
+    {% if image_path %}
+        <img src="../media/{{image_path}}" alt="Uploaded Image" class="right-image">
+    {% else %}
+        <p>No image uploaded</p>
+    {% endif %}
+    {% if another_image %}
+    <img src="../media/{{another_image}}" alt="Uploaded Image">
+    {% else %}
+        <p>No image found</p>
+    {% endif %}
+{% endblock body %}
