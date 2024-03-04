@@ -12,5 +12,4 @@ urlpatterns = [
     path('logout', views.logout,name="logout"),
     path('home',views.homePage,name="homePage"),
     path('form',views.form,name="form"),
-    path('processess',views.process,name="process"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

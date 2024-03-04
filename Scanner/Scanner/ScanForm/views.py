@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 import os
-import requests
 from django.conf import settings
+from Form_Detection import app
 
 # Create your views here.
 def startPage(request):
@@ -51,12 +51,7 @@ def logout(request):
 # @login_required
 def homePage(request):
     user = request.user
-    
-    userInfo = {
-        "username" : user.username,
-        "first_name": user.first_name,
-    }
-    return render(request,"home.html",{"userInfo":userInfo})
+    return render(request,"home.html")
 
 def form(request):
     if request.method == "POST":
@@ -68,16 +63,11 @@ def form(request):
             with open(file_path, 'wb') as f:
                 for chunk in image.chunks():
                     f.write(chunk)
-            print(image.name)
-            return render(request, "form.html", {'image_path': image.name})
+            
+            data = app.predict_from_form("media/"+str(image))
+            return render(request, "form.html", {'image_path': image,'data':data})
         else:
             # Handle the case where no file was uploaded
             return render(request, "form.html", {'error_message': 'No file was uploaded'})
 
     return render(request, "form.html")
-
-
-def process(request):
-    response = requests.get('http://localhost:8000/process')
-    message = response.json().get('message')
-    return render(request,"processess.html",{"message":message})
