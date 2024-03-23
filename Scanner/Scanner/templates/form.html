@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Form Page{% endblock title %}
+{% block body %}
+    <style>
+        .right-image {
+            float: right; /* Float the image to the right */
+            height: 570px; /* Set the height */
+            width: 540px; /* Set the width */
+            margin-left: 10px; /* Optional: Add some space between the image and other content */
+        }
+    </style>
+
+    {% if image_path %}
+        <img src="{{image_path}}" alt="Uploaded Image" class="right-image">
+    {% endif %}
+    <h1>Personal Information</h1>
+    <ul>
+        <li>First Name: {{ data.personal_info.first_name }}</li>
+        <li>Middle Name: {{ data.personal_info.middle_name }}</li>
+        <li>Last Name: {{ data.personal_info.last_name }}</li>
+        <li>Citizenship No: {{ data.personal_info.citizenship_no }}</li>
+        <li>Email: {{ data.personal_info.email }}</li>
+        <li>Issued District: {{ data.personal_info.issued_district }}</li>
+        <li>Issued Date: {{ data.personal_info.issued_date }}</li>
+    </ul>
+
+    <h1>Nominee Information</h1>
+    <ul>
+        <li>First Name: {{ data.nominee_info.first_name }}</li>
+        <li>Middle Name: {{ data.nominee_info.middle_name }}</li>
+        <li>Last Name: {{ data.nominee_info.last_name }}</li>
+        <li>Citizenship No: {{ data.nominee_info.citizenship_no }}</li>
+    </ul>
+
+    <h1>Temporary Address</h1>
+    <ul>
+        <li>District: {{ data.temporary_address.district }}</li>
+        <li>House No: {{ data.temporary_address.house_no }}</li>
+        <li>VDC: {{ data.temporary_address.vdc }}</li>
+        <li>Ward No: {{ data.temporary_address.ward_no }}</li>
+    </ul>
+
+    <h1>Permanent Address</h1>
+    <ul>
+        <li>District: {{ data.permanent_address.district }}</li>
+        <li>House No: {{ data.permanent_address.house_no }}</li>
+        <li>VDC: {{ data.permanent_address.vdc }}</li>
+        <li>Ward No: {{ data.permanent_address.ward_no }}</li>
+    </ul>
+{% endblock body %}
