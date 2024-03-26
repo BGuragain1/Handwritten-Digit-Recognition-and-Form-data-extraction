@@ -10,24 +10,43 @@
             <input type="file" class="form-control-file" id="imageUpload" name="imageUpload">
         </div>
         <button type="submit" class="btn btn-primary">Upload Image</button>
+    </form>
     <table class="table mt-3">
         <thead>
             <tr>
-                <th scope="col">Form ID</th>
-                <th scope="col">Name</th>
+                <th scope="col">S.N.</th>
+                <th scope="col">Form</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
+            {% for form in forms %}
             <tr>
-                <th scope="row">1</th>
-                <td>Form 1</td>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>Form {{ form.id }}</td>
                 <td>
-                    <a href = "/form"type="button" class="btn btn-primary btn-sm">Edit</a>
-                    <a type="button" class="btn btn-danger btn-sm">Delete</a>
+                    <div class="btn-group" role="group" aria-label="Form actions">
+                        <!-- Edit button with icon -->
+                        <form method="post" action="{% url 'editForm' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="edit" value="{{ form.id }}">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil-fill"></i> <!-- Bootstrap icon for edit -->
+                            </button>
+                        </form>  
+            
+                        <!-- Delete button with icon -->
+                        <form method="post" action="{% url 'homePage' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete" value="{{ form.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash-fill"></i> <!-- Bootstrap icon for delete -->
+                            </button>
+                        </form>
+                    </div>   
                 </td>
             </tr>
-            <!-- Add more rows for additional forms -->
+        {% endfor %}
         </tbody>
     </table>
 </div>

@@ -3,15 +3,14 @@
 {% block body %}
     <style>
         .right-image {
-            float: right; /* Float the image to the right */
-            height: 570px; /* Set the height */
-            width: 540px; /* Set the width */
-            margin-left: 10px; /* Optional: Add some space between the image and other content */
+            height: 1000px; /* Set the height */
+            width: 800px; /* Set the width */
+            align-item:center;
         }
     </style>
 
     {% if image_path %}
-        <img src="{{image_path}}" alt="Uploaded Image" class="right-image">
+        <img src={{image_path}} alt="Uploaded Image" class="right-image">
     {% endif %}
     <h1>Personal Information</h1>
     <ul>

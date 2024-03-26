@@ -1,7 +1,7 @@
 import cv2
 from Form_Detection import getTheBox as get
 
-def createData(image):
+def createData(image,image_name):
     gb = get.getTheWords(image)
     data = {
         "personal_info": {
@@ -33,7 +33,7 @@ def createData(image):
             "ward_no": gb.getPermWardNo()
         },
         "biometric_info": {
-            gb.getSignature(),gb.getFingerPrints()
+            gb.getSignature(image_name),gb.getFingerPrints(image_name)
         }
     }
     return data

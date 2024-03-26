@@ -347,7 +347,7 @@ class getTheWords():
         return ''.join(final_word)
 
 
-    def getSignature(self):
+    def getSignature(self,image_name):
         point1 = rn.ROI_signature_first[0]
         point2 = rn.ROI_signature_first[1]
         
@@ -362,12 +362,12 @@ class getTheWords():
 
         cropped_image_first = self.image[y1:y2, x1:x2]
         cropped_image_second = self.image[y3:y4, x3:x4]
-        cv2.imwrite('media/Signature_first.jpg', cropped_image_first)
-        cv2.imwrite('media/Signature_second.jpg', cropped_image_second)
+        cv2.imwrite('media/uploads/signature/S1_'+str(image_name)+ '.jpg', cropped_image_first)
+        cv2.imwrite('media/uploads/signature/S2_'+str(image_name)+ '.jpg', cropped_image_second)
 
         return
 
-    def getFingerPrints(self):
+    def getFingerPrints(self,image_name):
         point1 = rn.ROI_fingerprint_left[0]
         point2 = rn.ROI_fingerprint_left[1]
         
@@ -383,8 +383,8 @@ class getTheWords():
         cropped_image_left = self.image[y1:y2, x1:x2]
         cropped_image_right = self.image[y3:y4, x3:x4]
 
-        cv2.imwrite('media/FingerPrint_left.jpg', cropped_image_left)
-        cv2.imwrite('media/FingerPrint_right.jpg', cropped_image_right)
+        cv2.imwrite('media/uploads/fingerprints/FL_'+str(image_name)+ '.jpg', cropped_image_left)
+        cv2.imwrite('media/uploads/fingerprints/FR_'+str(image_name)+ '.jpg', cropped_image_right)
         return
 
     def getTempDistrict(self):
