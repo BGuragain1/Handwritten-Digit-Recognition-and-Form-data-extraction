@@ -3,11 +3,11 @@
 {% block body%}
 <div class="container mt-5">
     <h1 class="mb-4">Welcome {{user.first_name}}!! <br>To the Form Scanner!</h1>
-    <form action="/form" method="post" enctype="multipart/form-data">
+    <form action="/edit" method="post" enctype="multipart/form-data">
         {%csrf_token%}
         <div class="form-group">
             <label for="imageUpload">Choose an image to upload:</label>
-            <input type="file" class="form-control-file" id="imageUpload" name="imageUpload">
+            <input type="file" class="form-control-file" id="imageUpload" name="imageUpload" accept="image/*">
         </div>
         <button type="submit" class="btn btn-primary">Upload Image</button>
     </form>
@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th scope="col">S.N.</th>
-                <th scope="col">Form</th>
+                <th scope="col">Uploaded Date Time</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
             {% for form in forms %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>Form {{ form.id }}</td>
+                <td>{{ form.uploaded_date }}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Form actions">
                         <!-- Edit button with icon -->

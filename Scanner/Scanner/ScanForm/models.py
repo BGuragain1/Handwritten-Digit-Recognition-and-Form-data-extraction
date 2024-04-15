@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 class ClientDetails(models.Model):
     user_id = models.CharField(max_length=255)
@@ -23,4 +25,4 @@ class ClientDetails(models.Model):
     perm_house_no = models.CharField(max_length=255)
     perm_vdc = models.CharField(max_length=255)
     perm_ward_no = models.CharField(max_length=255)
-
+    uploaded_date = models.DateTimeField(null=True)

@@ -27,7 +27,7 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
+            # # print(np.sum(final_image))
             if np.sum(final_image) > 1000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
@@ -51,8 +51,8 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 5000:
+            # # print(np.sum(final_image))
+            if np.sum(final_image) > 1000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
 
@@ -76,8 +76,8 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 30000:
+            # # print(np.sum(final_image))
+            if np.sum(final_image) > 1000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
 
@@ -101,9 +101,9 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 5000:
-                word = pw.num_predictions(final_image)
+            # # print(np.sum(final_image))
+            if np.sum(final_image) > 1000:
+                word = pw.image_prediction(final_image)
                 final_word.append(word)
 
         return ''.join(final_word)
@@ -128,8 +128,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -156,8 +156,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000 and np.sum(final_image) < 100000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -182,9 +182,9 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 5000:
-                word = pw.num_predictions(final_image)
+            # # print(np.sum(final_image))
+            if np.sum(final_image) > 10000:
+                word = pw.image_prediction(final_image)
                 final_word.append(word)
 
         return ''.join(final_word)
@@ -208,8 +208,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -222,26 +222,21 @@ class getTheWords():
         for points in rn.ROI_CN_date:
             point1 = points[0]
             point2 = points[1]
-
-            x1, y1 = max(0, point1[0]), max(0, point1[1])
-            x2, y2 = min(self.image.shape[1], point2[0]), min(self.image.shape[0], point2[1])
+            
+            x1, y1 = point1[0],point1[1]
+            x2, y2 = point2[0],point2[1]
 
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
-            
-            bin_img = cv2.adaptiveThreshold(cropped_image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 11)
 
-            # bin_img = cv2.dilate(bin_img, kernel1, iterations=1)
+            final_image = pw.pre_process_img(cropped_image)
 
-            bin_img = cv2.GaussianBlur(bin_img, (3,3), 0)
-
-            resized_image = cv2.resize(bin_img, (28, 28))
-            
-            # plt.imshow(resized_image,cmap="gray")
+            # plt.imshow(final_image,cmap="gray")
             # plt.show()
-            print(np.sum(resized_image))
-            if np.sum(resized_image) > 30000:
-                word = pw.image_prediction(resized_image)
+
+            # print(np.sum(final_image))
+            if np.sum(final_image) > 10000:
+                word = pw.image_prediction(final_image)
                 final_word.append(word)
 
         return ''.join(final_word)
@@ -264,8 +259,8 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 5000:
+            # print(np.sum(final_image))
+            if np.sum(final_image) > 10000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
 
@@ -289,7 +284,7 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
+            # print(np.sum(final_image))
             if np.sum(final_image) > 5000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
@@ -314,8 +309,8 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 5000:
+            # # print(np.sum(final_image))
+            if np.sum(final_image) > 10000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
 
@@ -339,9 +334,9 @@ class getTheWords():
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
 
-            print(np.sum(final_image))
-            if np.sum(final_image) > 5000:
-                word = pw.num_predictions(final_image)
+            # print(np.sum(final_image))
+            if np.sum(final_image) > 10000:
+                word = pw.image_prediction(final_image)
                 final_word.append(word)
 
         return ''.join(final_word)
@@ -406,8 +401,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -434,8 +429,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -462,8 +457,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -490,8 +485,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -518,8 +513,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -547,8 +542,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -575,8 +570,8 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 30000):
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -603,9 +598,9 @@ class getTheWords():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_img(last_image)
             
-            print(np.sum(final_image))
-            if (np.sum(final_image) > 100):
-                word = pw.num_predictions(final_image)
+            # print(np.sum(final_image))
+            if (np.sum(final_image) > 10000):
+                word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
                 # plt.imshow(final_image,cmap="gray")
@@ -614,11 +609,12 @@ class getTheWords():
 
     
 def main():
-    image = cv2.imread("Forms/Try.jpg")
+    image = cv2.imread("Forms/output_image.jpg")
     image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     getter = getTheWords(image)
-    ans = getter.getTempDistrict()
+    ans = getter.getNLastName()
     print("Answer is : ",ans)
+
 
 if __name__ == "__main__":
     main()

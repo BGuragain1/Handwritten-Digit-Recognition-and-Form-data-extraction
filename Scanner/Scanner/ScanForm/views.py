@@ -9,6 +9,7 @@ from Form_Detection import app
 from . import utils
 import numpy as np
 
+
 # Create your views here.
 def startPage(request):
     return render(request,"index.html")
@@ -74,9 +75,8 @@ def homePage(request):
             utils.deleteClient(form_id)
     return render(request, "home.html", {"forms": forms})
 
-
 @login_required
-def form(request):
+def editForm(request):
     if request.method == "POST":
         user_id = request.user.id
         # Check if a file was uploaded
@@ -91,20 +91,13 @@ def form(request):
             
             data = app.predict_from_form(file_path,image_name)
             utils.insertData(data,user_id,image_name)
-            return render(request, "form.html", {'image_path': "../media/uploads/form_pic/"+str(image_name),'data':data})
-        else:
-            messages.info(request,"Image was not Uploaded")
-            return redirect("homePage")
-
-    return render(request, "form.html")
-
-@login_required
-def editForm(request):
-    if request.method == "POST":
-        if "edit" in request.POST:
+            return render(request, "edit.html", {'image_path': "../media/uploads/form_pic/"+str(image_name),'data':data})
+        
+        elif "edit" in request.POST:
             form_id = request.POST.get("edit")
             data = utils.getDetails(form_id)
             return render(request, "edit.html", {"data": data, "id":form_id,"image_path": "media/uploads/form_pic/" + str(data.form_name)})
+        
         elif "submit" in request.POST:
             form_id = request.POST.get('submit')
             utils.updateData(form_id,request.POST.get("first_name"),
