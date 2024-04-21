@@ -26,8 +26,9 @@ SECRET_KEY = 'django-insecure-q!sm2#bjcoe4r_$j7d##i814-pe!_kfx86!5y!04f!q%)h_u8-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['formscanner.bigyanguragain.com.np','127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = ['https://formscanner.bigyanguragain.com.np']
 
 # Application definition
 
@@ -130,3 +131,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/uploads/form_pic')
 MEDIA_URL = '/media/uploads/form_pic/'
+
+MEDIA_ROOT1 = os.path.join(BASE_DIR, 'media/uploads/signature')
+MEDIA_URL1 = '/media/uploads/signature/'

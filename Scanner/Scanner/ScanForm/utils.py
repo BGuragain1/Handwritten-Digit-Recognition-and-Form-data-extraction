@@ -32,9 +32,9 @@ def insertData(data,id,form_n):
     client.save()
  
 
-def updateData(form_id,f_name,m_name,l_name,c_no,iss_date,email,iss_dis,n_f_name,n_m_name,n_l_name,
+def updateData(name,f_name,m_name,l_name,c_no,iss_date,email,iss_dis,n_f_name,n_m_name,n_l_name,
                n_c_no,t_d,t_h,t_vdc,t_wno,p_d,p_h,p_vdc,p_wno):
-    client = ClientDetails.objects.get(id=form_id)
+    client = ClientDetails.objects.get(form_name=name)
 
     client.first_name = f_name
     client.middle_name = m_name
@@ -69,13 +69,32 @@ def deleteClient(id):
     os.remove("media/uploads/fingerprints/FR_"+client.form_name+'.jpg')
     os.remove("media/uploads/fingerprints/FL_"+client.form_name+'.jpg')
     client.delete()
-    return True  # Indicate successful deletion
+    return True  
+
+def deleteClient_name(name):
+    client = ClientDetails.objects.get(form_name=name)
+    os.remove("media/uploads/form_pic/"+client.form_name)
+    os.remove("media/uploads/signature/S1_"+client.form_name+'.jpg')
+    os.remove("media/uploads/signature/S2_"+client.form_name+'.jpg')
+    os.remove("media/uploads/fingerprints/FR_"+client.form_name+'.jpg')
+    os.remove("media/uploads/fingerprints/FL_"+client.form_name+'.jpg')
+    client.delete()
+    return True 
 
 def getForms(id_value):
-    form_list = ClientDetails.objects.filter(user_id=id_value)
+    form_list = ClientDetails.objects.filter(user_id=id_value,status="pending")
     return form_list
 
-def getDetails(id):
-    form_list = ClientDetails.objects.get(id=id)
-    # print(form_list.form_name)
+def getDetails(name):
+    form_list = ClientDetails.objects.get(form_name=name)
     return form_list
+
+def getAll():
+    data = ClientDetails.objects.filter(status="approved")
+    return data
+
+def approve(name):
+    client = ClientDetails.objects.get(form_name=name)
+    client.status = "approved"
+    client.save()
+    return

@@ -1,10 +1,10 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 {% block title %}Home Page{% endblock title %}
 {% block body%}
 <div class="container mt-5">
     <h1 class="mb-4">Welcome {{user.first_name}}!! <br>To the Form Scanner!</h1>
-    <form action="/edit" method="post" enctype="multipart/form-data">
-        {%csrf_token%}
+    <form action="/form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="form-group">
             <label for="imageUpload">Choose an image to upload:</label>
             <input type="file" class="form-control-file" id="imageUpload" name="imageUpload" accept="image/*">
@@ -26,23 +26,31 @@
                 <td>{{ form.uploaded_date }}</td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Form actions">
-                        <!-- Edit button with icon -->
+
                         <form method="post" action="{% url 'editForm' %}">
                             {% csrf_token %}
-                            <input type="hidden" name="edit" value="{{ form.id }}">
+                            <input type="hidden" name="edit" value="{{ form.form_name }}">
                             <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="bi bi-pencil-fill"></i> <!-- Bootstrap icon for edit -->
+                                <i class="bi bi-pencil-fill"></i>
                             </button>
                         </form>  
-            
-                        <!-- Delete button with icon -->
+
                         <form method="post" action="{% url 'homePage' %}">
                             {% csrf_token %}
                             <input type="hidden" name="delete" value="{{ form.id }}">
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash-fill"></i> <!-- Bootstrap icon for delete -->
+                            <button type="submit" class="btn btn-danger btn-sm ml-2">
+                                <i class="bi bi-trash-fill"></i> 
                             </button>
                         </form>
+
+                        <form method="post" action="{% url 'homePage' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="approve" value="{{ form.form_name }}">
+                            <button type="submit" class="btn btn-success btn-sm ml-2"> 
+                                <i class="bi bi-check-circle-fill"></i> 
+                            </button>
+                        </form>
+
                     </div>   
                 </td>
             </tr>

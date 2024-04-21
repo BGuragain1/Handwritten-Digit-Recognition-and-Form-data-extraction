@@ -26,3 +26,4 @@ class ClientDetails(models.Model):
     perm_vdc = models.CharField(max_length=255)
     perm_ward_no = models.CharField(max_length=255)
     uploaded_date = models.DateTimeField(null=True)
+    status = models.CharField(default="pending",max_length=255)

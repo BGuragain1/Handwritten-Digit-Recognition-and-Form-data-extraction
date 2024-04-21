@@ -3,15 +3,15 @@
 {% block body %}
     <style>
         .right-image {
-            height: 500px; /* Increased height for larger image */
-            width: auto; /* Adjusted width */
-            display: block; /* Center the image */
-            margin: 0 auto; /* Center the image */
-            margin-bottom: 20px; /* Added margin at the bottom */
+            height: 500px;
+            width: auto; 
+            display: block; 
+            margin: 0 auto;
+            margin-bottom: 20px; 
         }
         .btn-container {
-            text-align: center; /* Center the buttons */
-            margin-top: 20px; /* Added margin at the top */
+            text-align: center;
+            margin-top: 20px; 
         }
     </style>
 
@@ -116,6 +116,10 @@
             <div class="col-md-3">
                 <label for="perm_ward_no" class="form-label">Ward No</label>
                 <input type="text" class="form-control" id="perm_ward_no" name="perm_ward_no" value="{{ data.perm_ward_no }}">
+            </div>
+            <div class="col-md-3">
+                <label for="signature" class="form-label">Signature</label>
+                <img src="../media/uploads/signature/S1_{{ id }}.jpg" alt="Signature" style="max-width: 100px; max-height: 100px; border: 2px solid black;">
             </div>
         </div>
         
