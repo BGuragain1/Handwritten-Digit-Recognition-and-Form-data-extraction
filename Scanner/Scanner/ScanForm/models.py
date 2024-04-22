@@ -12,6 +12,7 @@ class ClientDetails(models.Model):
     email = models.CharField(max_length=255)
     issued_district = models.CharField(max_length=255)
     issued_date = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255,default="123456789")
     first_name_nominee = models.CharField(max_length=255)
     middle_name_nominee = models.CharField(max_length=255)
     last_name_nominee = models.CharField(max_length=255)

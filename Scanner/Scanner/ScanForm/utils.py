@@ -12,6 +12,7 @@ def insertData(data,id,form_n):
         last_name=data["last_name"],
         citizenship_no=data["citizenship_no"],
         email=data["email"],
+        phone_number = data["phone_number"],
         issued_district=data["issued_district"],
         issued_date=data["issued_date"],
         first_name_nominee=data["first_name_nominee"],
@@ -32,7 +33,7 @@ def insertData(data,id,form_n):
     client.save()
  
 
-def updateData(name,f_name,m_name,l_name,c_no,iss_date,email,iss_dis,n_f_name,n_m_name,n_l_name,
+def updateData(name,f_name,m_name,l_name,c_no,iss_date,email,phone,iss_dis,n_f_name,n_m_name,n_l_name,
                n_c_no,t_d,t_h,t_vdc,t_wno,p_d,p_h,p_vdc,p_wno):
     client = ClientDetails.objects.get(form_name=name)
 
@@ -43,7 +44,8 @@ def updateData(name,f_name,m_name,l_name,c_no,iss_date,email,iss_dis,n_f_name,n_
     client.issued_date = iss_date
     client.email = email
     client.issued_district = iss_dis
-
+    client.phone_number = phone
+    
     client.first_name_nominee = n_f_name
     client.middle_name_nominee = n_m_name
     client.last_name_nominee = n_l_name

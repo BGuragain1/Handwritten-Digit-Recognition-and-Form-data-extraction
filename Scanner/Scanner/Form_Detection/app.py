@@ -6,12 +6,12 @@ def predict_from_form(path,image_name):
     image = cv2.imread(path)
     output_image = fp.preprocess_image(image)
     data = cj.createData(output_image,image_name)
-    print(data)
+    # print(data)
     return data
 
 def main():
-    path = "Forms/6.jpg"
-    predict_from_form(path)
+    path = "Forms/Form1.jpg"
+    predict_from_form(path,"image_name")
 
 if __name__ == "__main__":
     main()

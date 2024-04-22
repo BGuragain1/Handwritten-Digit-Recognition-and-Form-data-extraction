@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def preprocessImage(img):
     # resizing the image
-    img = cv2.resize(img, (heightImg, widthImg))
+    img = cv2.resize(img, (1500, 1200),cv2.INTER_CUBIC)
 
     imgThres = img.copy()
 
@@ -26,7 +26,7 @@ def preprocessImage(img):
     
     return gray, imgThres
 
-def EdgeDetection(gray,img):
+def EdgeDetection(gray):
     # Edge Detection.
     canny = cv2.Canny(gray, 0, 200)
     canny = cv2.dilate(canny, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)))
@@ -43,6 +43,7 @@ def EdgeDetection(gray,img):
         corners = cv2.approxPolyDP(c, epsilon, True)
         # If our approximated contour has four points
         if len(corners) == 4 and cv2.contourArea(c) > 10000:
+            # plt.imshow(cv2.drawContours(gray, [corners], -1, (225, 0, 0), 3))
             break
     return corners
 
@@ -59,16 +60,17 @@ def gettingform(corners,imgThres):
 
     # REMOVE 20 PIXELS FORM EACH SIDE
     imgWarpColored = imgWarpColored[20:imgWarpColored.shape[0] - 20, 20:imgWarpColored.shape[1] - 20]
-    imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg))
+    imgWarpColored = cv2.resize(imgWarpColored, (widthImg, heightImg),cv2.INTER_CUBIC)
 
     #converting to black amd white
     imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
 
     # #Apply adaptive thresholding with a lower block size and a higher constant value to decrease the number of dots
-    imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 13, 9)
+    imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 15, 9)
 
     # Invert the binary image
     imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
+
     return imgAdaptiveThre
 
 def reorder(myPoints):
@@ -84,29 +86,21 @@ def reorder(myPoints):
 
     return myPointsNew
 
-def clear_image(img):
-    img = cv2.resize(img, (widthImg, heightImg))
-    imgWarpGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 13, 9)
-    gray2 = cv2.bitwise_not(imgAdaptiveThre)
-    return gray2
 
 heightImg = 1500
-widthImg = 1000
+widthImg = 1200
 kernel = np.ones((5, 5), np.uint8)
-def preprocess_image(image):
-    try:
-        grayImage,imgThreshold = preprocessImage(image)
-        finalCorners = EdgeDetection(grayImage)
-        finalImage = gettingform(finalCorners,imgThreshold)
-    except:
-        finalImage = clear_image(image)
 
+def preprocess_image(image):
+    grayImage,imgThreshold = preprocessImage(image)
+    finalCorners = EdgeDetection(grayImage)
+    finalImage = gettingform(finalCorners,imgThreshold)
     output_image = af.alignForm(finalImage)
     return output_image
 
 def main():
-    final = preprocess_image(cv2.imread("Forms/3.jpg"))
+    final = preprocess_image(cv2.imread("Forms/Form8.jpg"))
+    cv2.imwrite("Forms/output_8.jpg",final)
     plt.imshow(final)
     plt.show()
 

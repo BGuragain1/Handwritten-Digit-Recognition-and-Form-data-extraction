@@ -69,7 +69,6 @@ def homePage(request):
     if request.method=="POST":
         if "delete" in request.POST:
             form_id = request.POST.get('delete')
-            # print(form_id)
             utils.deleteClient(form_id)
         elif "approve" in request.POST:
             form_name = request.POST.get('approve')
@@ -92,6 +91,7 @@ def editForm(request):
                              request.POST.get("citizenship_no"),
                              request.POST.get("issued_date"),
                              request.POST.get("email"),
+                             request.POST.get("phone_number"),
                              request.POST.get("issued_district"),
                              request.POST.get("nominee_first_name"),
                              request.POST.get("nominee_middle_name"),
@@ -138,6 +138,7 @@ def details(request):
                              request.POST.get("citizenship_no"),
                              request.POST.get("issued_date"),
                              request.POST.get("email"),
+                             request.POST.get("phone_number"),
                              request.POST.get("issued_district"),
                              request.POST.get("nominee_first_name"),
                              request.POST.get("nominee_middle_name"),

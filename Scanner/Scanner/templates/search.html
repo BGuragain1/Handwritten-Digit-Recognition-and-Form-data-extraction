@@ -29,36 +29,39 @@
                 <strong>Name:</strong> {{ data.first_name }} {{ data.middle_name }} {{ data.last_name }}
               </div>
               <div class="col">
-                <strong>Citizenship No:</strong> {{ data.citizenship_no }}
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col">
                 <strong>Email:</strong> {{ data.email }}
               </div>
-              <div class="col">
-                <strong>Issued District:</strong> {{ data.issued_district }}
-              </div>
             </div>
             <div class="row mb-3">
+              <div class="col">
+                <strong>Citizenship No:</strong> {{ data.citizenship_no }}
+              </div>
               <div class="col">
                 <strong>Issued Date:</strong> {{ data.issued_date }}
               </div>
+            </div>
+            <div class="row mb-3">
+            <div class="col">
+                <strong>Issued District:</strong> {{ data.issued_district }}
+              </div>
               <div class="col">
-                <strong>Nominee Name:</strong> {{ data.first_name_nominee }} {{ data.middle_name_nominee }} {{ data.last_name_nominee }}
+                <strong>Phone Number:</strong> {{ data.phone_number }}
               </div>
             </div>
             <div class="row mb-3">
-              <div class="col">
-                <strong>Citizenship No (Nominee):</strong> {{ data.citizenship_no_nominee }}
-              </div>
               <div class="col">
                 <strong>Temporary Address:</strong> {{ data.temp_vdc }}-{{ data.temp_ward_no }},{{ data.temp_district }}
               </div>
+              <div class="col">
+                <strong>Permanent Address:</strong> {{ data.perm_vdc }}-{{ data.perm_ward_no }},{{ data.perm_district }}
+              </div>
             </div>
             <div class="row mb-3">
               <div class="col">
-                <strong>Permanent Address:</strong> {{ data.perm_vdc }}-{{ data.perm_ward_no }},{{ data.perm_district }}
+                <strong>Nominee Name:</strong> {{ data.first_name_nominee }} {{ data.middle_name_nominee }} {{ data.last_name_nominee }}
+              </div>
+              <div class="col">
+                <strong>Citizenship No (Nominee):</strong> {{ data.citizenship_no_nominee }}
               </div>
             </div>
           </div>

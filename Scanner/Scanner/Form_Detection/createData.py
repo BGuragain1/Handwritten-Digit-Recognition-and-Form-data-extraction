@@ -8,7 +8,7 @@ def createData(image,image_name):
         "middle_name": gb.getMiddleName().lower(),
         "last_name": gb.getLastName().lower(),
         "citizenship_no": gb.getCitizenNo(),
-        "email": gb.getEmail1().lower()+"@"+gb.getEmail2().lower(),
+        "email": gb.getEmail1().lower()+"@gmail.com",
         "issued_district": gb.getIssuedDistrict().lower(),
         "issued_date": gb.getIssuedDate(),
         "phone_number" : gb.getPhoneNumber(),
@@ -27,10 +27,9 @@ def createData(image,image_name):
         "perm_house_no": gb.getPermHouseNo(),
         "perm_vdc": gb.getPermVDC().lower(),
         "perm_ward_no": gb.getPermWardNo(),
-
-        "signature":gb.getSignature(image_name),
-        "fingerprint":gb.getFingerPrints(image_name)
-        }
+        "biometric1": gb.getSignature(image_name),
+         "biometric2":gb.getFingerPrints(image_name)
+    }
     return data
 
 

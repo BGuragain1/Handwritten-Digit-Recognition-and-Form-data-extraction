@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 model = tf.keras.models.load_model('Form_Detection/model/my_model.h5')
 letter_model = tf.keras.models.load_model('Form_Detection/model/letters_model.h5')
@@ -15,8 +16,19 @@ def pre_process_img(img):
   bin_img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 21)
   bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel1)
   bin_img = cv2.GaussianBlur(bin_img, (5,5), 1)
-  # dilated_image = cv2.dilate(bin_img, kernel1, iterations=1)
-  # eroded_image = cv2.erode(bin_img, kernel1, iterations=1)
+  bin_img = cv2.bilateralFilter(bin_img, 9, 75, 75) 
+  dilated_image = cv2.dilate(bin_img, kernel1, iterations=1)
+  bin_img = addPadding(dilated_image)
+  resized_image = cv2.resize(bin_img , (28, 28))
+  return resized_image
+
+
+def pre_process_seperated_img(img):
+  kernel1  = np.ones((3, 3), np.uint8)
+  bin_img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 21)
+  bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel1)
+  bin_img = cv2.GaussianBlur(bin_img, (5,5), 1)
+  bin_img = cv2.bilateralFilter(bin_img, 9, 75, 75) 
   bin_img = addPadding(bin_img)
   resized_image = cv2.resize(bin_img , (28, 28))
   return resized_image
@@ -37,11 +49,11 @@ def num_predictions(img):
 
   reshaped_image = img.reshape(-1,28, 28, 1)
 
-  prediction = model.predict(reshaped_image)
+  prediction = digit_model.predict(reshaped_image)
 
   ans = np.argmax(prediction)
 
-  word = arr_both[ans]
+  word = arr_digits[ans]
 
   return word
 
@@ -50,8 +62,8 @@ def addPadding(img):
   h, w = img.shape
 
   # Define the size of the new image with black surface
-  new_h = h + 15 # Add some padding (adjust as needed)
-  new_w = w + 15  # Add some padding (adjust as needed)
+  new_h = h + 10 # Add some padding (adjust as needed)
+  new_w = w + 10  # Add some padding (adjust as needed)
 
   # Create a blank black image
   black_surface = np.zeros((new_h, new_w), dtype=np.uint8)
