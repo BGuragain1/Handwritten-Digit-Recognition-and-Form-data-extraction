@@ -1,90 +1,38 @@
 {% extends 'base.html' %}
+
 {% block title %}Search Page{% endblock title %}
+
 {% block body %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Include jQuery -->
 
 <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <div class="row mb-3">
-          <div class="col">
-            <form id="searchForm" class="d-flex">
-                <input id="searchInput" class="form-control me-2" type="search" placeholder="Search by name" aria-label="Search">
-              </form>
-          </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2 class="mb-4">Search Students</h2>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search students..." aria-label="Search students" aria-describedby="button-search">
+                <button class="btn btn-primary" type="button" id="button-search">Search</button>
+            </div>
         </div>
-        {% for data in datas %}
-        <div class="card border-dark p-4 client-box">
-        <form method="post" action="{% url 'searchDetails' %}">
-            {% csrf_token %}
-            <input type="hidden" name="delete" value="{{ data.form_name }}">
-            <button type="submit" class="btn btn-danger btn-sm">
-                <i class="bi bi-trash-fill"></i> 
-            </button>
-        </form>
-         <div class="card-header bg-dark text-white">Client Number {{forloop.counter}}</div>
-          <div class="card-body">
-            <div class="row mb-3">
-              <div class="col client-name">
-                <strong>Name:</strong> {{ data.first_name }} {{ data.middle_name }} {{ data.last_name }}
-              </div>
-              <div class="col">
-                <strong>Email:</strong> {{ data.email }}
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col">
-                <strong>Citizenship No:</strong> {{ data.citizenship_no }}
-              </div>
-              <div class="col">
-                <strong>Issued Date:</strong> {{ data.issued_date }}
-              </div>
-            </div>
-            <div class="row mb-3">
-            <div class="col">
-                <strong>Issued District:</strong> {{ data.issued_district }}
-              </div>
-              <div class="col">
-                <strong>Phone Number:</strong> {{ data.phone_number }}
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col">
-                <strong>Temporary Address:</strong> {{ data.temp_vdc }}-{{ data.temp_ward_no }},{{ data.temp_district }}
-              </div>
-              <div class="col">
-                <strong>Permanent Address:</strong> {{ data.perm_vdc }}-{{ data.perm_ward_no }},{{ data.perm_district }}
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col">
-                <strong>Nominee Name:</strong> {{ data.first_name_nominee }} {{ data.middle_name_nominee }} {{ data.last_name_nominee }}
-              </div>
-              <div class="col">
-                <strong>Citizenship No (Nominee):</strong> {{ data.citizenship_no_nominee }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="my-4"></div>
-        {% endfor %}
-      </div>
     </div>
-  </div>
-  <script>
-    $(document).ready(function() {
-      $('#searchInput').keyup(function() { 
-        var searchTerm = $(this).val().toLowerCase(); 
-        $('.client-box').each(function() { 
-          var clientName = $(this).find('.client-name').text().toLowerCase();
-  
-          if (clientName.includes(searchTerm)) {
-            $(this).show(); 
-          } else {
-            $(this).hide(); 
-          }
-        });
-      });
-    });
-  </script>
+    <div class="row">
+        {% if students%}
+        {% for student in students %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ student.first_name }} {{ student.last_name }}</h5>
+                    <p class="card-text"><strong>Email:</strong> {{ student.email }}</p>
+                    <p class="card-text"><strong>Phone Number:</strong> {{ student.phone_number }}</p>
+                    <form method="post" action="/details">
+                      {% csrf_token %}
+                      <input type="hidden" name="detail" value="{{ student.id }}">
+                      <button type="submit" class="btn btn-primary mx-2">View Details</button>
+                  </form>                   
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
 {% endblock body %}

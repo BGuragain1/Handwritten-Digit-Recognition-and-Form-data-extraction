@@ -8,6 +8,7 @@ from django.conf import settings
 from Form_Detection import app
 from . import utils
 import numpy as np
+import json
 
 # Create your views here.
 def startPage(request):
@@ -64,16 +65,86 @@ def logout_view(request):
 
 @login_required
 def homePage(request):
-    user_id = request.user.id
-    forms = utils.getForms(user_id)
-    if request.method=="POST":
-        if "delete" in request.POST:
-            form_id = request.POST.get('delete')
-            utils.deleteClient(form_id)
-        elif "approve" in request.POST:
-            form_name = request.POST.get('approve')
-            utils.approve(form_name)
-    return render(request, "home.html", {"forms": forms})
+    messages.success(request, 'Login Sucessfully')
+    return render(request, "home.html")
+
+@login_required
+def addStudents(request):
+    if request.method == "POST":
+        id = request.user.id
+        form_name = np.random.random()
+        data = {
+            'user_id': id,
+            'form_name': form_name,
+            'first_name': request.POST.get('firstName'),
+            'middle_name': request.POST.get('middleName'),
+            'last_name': request.POST.get('lastName'),
+            'email': request.POST.get('email'),
+            'phone_number': request.POST.get('phoneNumber'),
+            'dob': request.POST.get('dob'),
+            'gender': request.POST.get('gender'),
+            'citizenship_number': request.POST.get('citizenshipNumber'),
+            'course': request.POST.get('course'),
+            'guardian': {
+                'first_name': request.POST.get('guardianFirstName'),
+                'middle_name': request.POST.get('guardianMiddleName'),
+                'last_name': request.POST.get('guardianLastName'),
+                'phone_number': request.POST.get('guardianPhoneNumber'),
+                'relation': request.POST.get('relation')
+            },
+            'secondary_school': {
+                'name': request.POST.get('secondarySchoolName'),
+                'year_completion': request.POST.get('secondaryYearCompletion'),
+                'cgpa': request.POST.get('secondaryCGPA'),
+                'district': request.POST.get('secondaryDistrict')
+            },
+            'higher_secondary_school': {
+                'name': request.POST.get('higherSecondarySchoolName'),
+                'year_completion': request.POST.get('higherSecondaryYearCompletion'),
+                'cgpa': request.POST.get('higherSecondaryCGPA'),
+                'district': request.POST.get('higherSecondaryDistrict')
+            },
+            'permanent_address': {
+                'province': request.POST.get('permanentProvince'),
+                'district': request.POST.get('permanentDistrict'),
+                'municipality': request.POST.get('permanentMunicipality'),
+                'ward_no': request.POST.get('permanentWardNo'),
+                'zip_code': request.POST.get('permanentZipCode')
+            },
+            'temporary_address': {
+                'province': request.POST.get('temporaryProvince'),
+                'district': request.POST.get('temporaryDistrict'),
+                'municipality': request.POST.get('temporaryMunicipality'),
+                'ward_no': request.POST.get('temporaryWardNo'),
+                'zip_code': request.POST.get('temporaryZipCode')
+            },
+        }
+        photo_file = request.FILES.get('photo')
+        signature_file = request.FILES.get('signature')
+        
+        if photo_file:
+            photo_directory = 'media/uploads/photo'
+            with open(os.path.join(photo_directory, "P_"+str(form_name)), 'wb+') as destination:
+                for chunk in photo_file.chunks():
+                    destination.write(chunk)
+
+        if signature_file:
+            signature_directory = 'media/uploads/signature'
+            with open(os.path.join(signature_directory, "S_"+str(form_name)), 'wb+') as destination:
+                for chunk in signature_file.chunks():
+                    destination.write(chunk)
+        json_data = json.dumps(data)
+
+        utils.insertData(json_data)
+        messages.success(request, 'Student Added Successfully')
+        return render(request,"home.html")
+    
+    return render(request,"student.html")
+
+@login_required
+def uploadForms(request):
+    return render(request,"formPhoto.html")
+
 
 @login_required
 def editForm(request):
@@ -158,9 +229,68 @@ def details(request):
 @login_required
 def searchDetails(request):
     data = utils.getAll()
-    if request.method == "POST":
-        if "delete" in request.POST:
-            name = request.POST.get("delete")
-            utils.deleteClient_name(name)
-    return render(request,"search.html",{"datas":data})
 
+    if "delete" in request.POST:
+        id = request.POST.get("delete")
+        utils.deleteClient(id)
+        messages.success(request, 'Deleted Successfully')
+    elif "edit" in request.POST:
+        id = request.POST.get("edit")
+        student = utils.getSpecified(id)
+        return render(request,"edit.html",{"student":student})
+    elif "update" in request.POST:
+        id = request.POST.get("update")
+        datas = {
+            'first_name': request.POST.get('first_name'),
+            'middle_name': request.POST.get('middle_name'),
+            'last_name': request.POST.get('last_name'),
+            'email': request.POST.get('email'),
+            'phone_number': request.POST.get('phone_number'),
+            'dob': request.POST.get('date_of_birth'),
+            'gender': request.POST.get('gender'),
+            'citizenship_number': request.POST.get('citizenship_number'),
+            'course': request.POST.get('course'),
+            'guardian': {
+                'first_name': request.POST.get('guardian_first_name'),
+                'middle_name': request.POST.get('guardian_middle_name'),
+                'last_name': request.POST.get('guardian_last_name'),
+                'phone_number': request.POST.get('guardian_phone_number'),
+                'relation': request.POST.get('relation_to_student')
+            },
+            'secondary_school': {
+                'name': request.POST.get('secondary_school_name'),
+                'year_completion': request.POST.get('secondary_year_completion'),
+                'cgpa': request.POST.get('secondary_cgpa'),
+                'district': request.POST.get('secondary_district')
+            },
+            'higher_secondary_school': {
+                'name': request.POST.get('higher_secondary_school_name'),
+                'year_completion': request.POST.get('higher_secondary_year_completion'),
+                'cgpa': request.POST.get('higher_secondary_cgpa'),
+                'district': request.POST.get('higher_secondary_district')
+            },
+            'permanent_address': {
+                'province': request.POST.get('permanent_province'),
+                'district': request.POST.get('permanent_district'),
+                'municipality': request.POST.get('permanent_municipality'),
+                'ward_no': request.POST.get('permanent_municipality'),
+                'zip_code': request.POST.get('permanent_zip_code')
+            },
+            'temporary_address': {
+                'province': request.POST.get('temporary_province'),
+                'district': request.POST.get('temporary_district'),
+                'municipality': request.POST.get('temporary_municipality'),
+                'ward_no': request.POST.get('temporary_ward_no'),
+                'zip_code': request.POST.get('temporary_zip_code')
+            },
+        }
+        json_data = json.dumps(datas)
+        utils.updateData(json_data,id)
+        messages.success(request, 'Updated Successfully')
+    return render(request,"search.html",{"students":data})
+
+@login_required
+def viewDetails(request):
+    id = request.POST.get("detail")
+    data = utils.getSpecified(id)
+    return render(request,"details.html",{"student":data})

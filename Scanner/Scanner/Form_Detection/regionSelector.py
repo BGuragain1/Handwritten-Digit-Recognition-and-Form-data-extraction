@@ -1,13 +1,4 @@
 ######### Region Selector ###############################
-"""
-This script allows to collect raw points from an image.
-The inputs are two mouse clicks one in the x,y position and
-the second in w,h of a rectangle.
-Once a rectangle is selected the user is asked to enter the type
-and the Name:
-Type can be 'Text' or 'CheckBox'
-Name can be anything
-"""
 
 import cv2
 import random

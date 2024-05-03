@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% block title %}Add Student Manually{% endblock title %}
+{% block body %}
+<style>
+/* Darken the form boxes */
+form {
+    background-color: #343a40; /* Dark background color */
+    color: #fff; /* Light text color */
+    padding: 20px; /* Add padding for better readability */
+}
+
+/* Darken the section topics */
+h3 {
+    background-color: #212529; /* Dark background color */
+    color: #fff; /* Light text color */
+    padding: 10px; /* Add padding for better appearance */
+    margin-top: 30px; /* Add margin for better separation */
+    margin-bottom: 20px; /* Add margin for better separation */
+}
+
+</style>
+<main class="container py-4">
+    <h2>Add Student Manually</h2>
+    <form method="POST" action='{% url "addStudents" %}' enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="photo">Upload Passport-sized Photo</label>
+            <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*">
+        </div>
+        <!-- General Information -->
+        <h3>General Information</h3>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="middleName">Middle Name</label>
+                <input type="text" class="form-control" id="middleName" name="middleName">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="dob">Date of Birth</label>
+                <input type="date" class="form-control" id="dob" name="dob" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="citizenshipNumber">Citizenship Number</label>
+            <input type="text" class="form-control" id="citizenshipNumber" name="citizenshipNumber" required>
+        </div>
+        <!-- Course for Enrollment -->
+        <h3>Course for Enrollment</h3>
+        <div class="form-group">
+            <label for="course">Select Course</label>
+            <select class="form-control" id="course" name="course" required>
+                <option value="">Select Course</option>
+                <option value="BSc Computer Science">BSc Computer Science</option>
+                <option value="BBA/BBS">BBA/BBS</option>
+                <option value="IMBA">IMBA</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <!-- Guardian Information -->
+        <h3>Guardian Information</h3>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="guardianFirstName">First Name</label>
+                <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="guardianMiddleName">Middle Name</label>
+                <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="guardianLastName">Last Name</label>
+                <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="guardianPhoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="guardianPhoneNumber" name="guardianPhoneNumber" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="relation">Relation to Student</label>
+                <input type="text" class="form-control" id="relation" name="relation" required>
+            </div>
+        </div>
+        <!-- Education Section -->
+        <h3>Education Section</h3>
+        <!-- Secondary Level -->
+        <h4>Secondary Level</h4>
+        <div class="form-group">
+            <label for="secondarySchoolName">School/College Name</label>
+            <input type="text" class="form-control" id="secondarySchoolName" name="secondarySchoolName" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="secondaryYearCompletion">Year of Completion</label>
+                <input type="text" class="form-control" id="secondaryYearCompletion" name="secondaryYearCompletion" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="secondaryCGPA">CGPA</label>
+                <input type="text" class="form-control" id="secondaryCGPA" name="secondaryCGPA" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="secondaryDistrict">District</label>
+                <input type="text" class="form-control" id="secondaryDistrict" name="secondaryDistrict" required>
+            </div>
+        </div>
+        <!-- Higher Secondary Level -->
+        <h4>Higher Secondary Level</h4>
+        <div class="form-group">
+            <label for="higherSecondarySchoolName">School/College Name</label>
+            <input type="text" class="form-control" id="higherSecondarySchoolName" name="higherSecondarySchoolName" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryYearCompletion">Year of Completion</label>
+                <input type="text" class="form-control" id="higherSecondaryYearCompletion" name="higherSecondaryYearCompletion" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryCGPA">CGPA</label>
+                <input type="text" class="form-control" id="higherSecondaryCGPA" name="higherSecondaryCGPA" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryDistrict">District</label>
+                <input type="text" class="form-control" id="higherSecondaryDistrict" name="higherSecondaryDistrict" required>
+            </div>
+        </div>
+        <!-- Permanent Address -->
+        <h3>Permanent Address</h3>
+        <div class="form-group">
+            <label for="permanentProvince">Province</label>
+            <input type="text" class="form-control" id="permanentProvince" name="permanentProvince" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentDistrict">District</label>
+            <input type="text" class="form-control" id="permanentDistrict" name="permanentDistrict" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentMunicipality">Municipality</label>
+            <input type="text" class="form-control" id="permanentMunicipality" name="permanentMunicipality" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentWardNo">Ward No</label>
+            <input type="text" class="form-control" id="permanentWardNo" name="permanentWardNo" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentZipCode">Zip Code</label>
+            <input type="text" class="form-control" id="permanentZipCode" name="permanentZipCode" required>
+        </div>
+        <!-- Temporary Address -->
+        <h3>Temporary Address</h3>
+        <div class="form-group">
+            <label for="temporaryProvince">Province</label>
+            <input type="text" class="form-control" id="temporaryProvince" name="temporaryProvince" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryDistrict">District</label>
+            <input type="text" class="form-control" id="temporaryDistrict" name="temporaryDistrict" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryMunicipality">Municipality</label>
+            <input type="text" class="form-control" id="temporaryMunicipality" name="temporaryMunicipality" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryWardNo">Ward No</label>
+            <input type="text" class="form-control" id="temporaryWardNo" name="temporaryWardNo" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryZipCode">Zip Code</label>
+            <input type="text" class="form-control" id="temporaryZipCode" name="temporaryZipCode" required>
+        </div>
+        <!-- Signature Upload -->
+        <div class="form-group">
+            <label for="signature">Upload Signature</label>
+            <input type="file" class="form-control-file" id="signature" name="signature" accept="image/*">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/home" class="btn btn-danger">Cancel</a>
+    </form>
+</main>
+{% endblock body %}

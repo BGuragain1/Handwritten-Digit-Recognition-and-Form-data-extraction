@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Details{% endblock title %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for styling */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            padding: 30px;
+        }
+        .info-block p {
+            margin-bottom: 5px;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+        .photo-section {
+            text-align: center;
+        }
+        .signature-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+            <a href="javascript:history.back()" class="btn btn-secondary mb-3 ml-3">Back</a>
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Student Details</h2>
+                    <div class="photo-section">
+                        <img src="/media/uploads/photo/P_{{ student.form_name }}" alt="Student Photo" class="img-fluid rounded mb-3" style="height:150px;width:130px;">
+                        <p class="text-muted">Student Photo</p>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3"><strong>Personal Information</strong></h5>
+                            <div class="info-block">
+                                <!-- Personal information details -->
+                                <p><strong>Full Name:</strong> {{ student.first_name }} {{student.middle_name}} {{student.last_name}}</p>
+                                <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+                                <p><strong>Gender:</strong> {{ student.gender }}</p>
+                                <p><strong>Citizenship Number:</strong> {{ student.citizenship_number }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Contact Information</h5>
+                            <div class="info-block">
+                                <!-- Contact information details -->
+                                <p><strong>Email:</strong> {{ student.email }}</p>
+                                <p><strong>Phone Number:</strong> {{ student.phone_number }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Course for Enrollment</h5>
+                            <div class="info-block">
+                                <!-- Course for Enrollment details -->
+                                <p><strong>Course:</strong> {{ student.course }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Guardian Information</h5>
+                            <div class="info-block">
+                                <!-- Guardian information details -->
+                                <p><strong>Full Name:</strong> {{ student.guardian_first_name }} {{ student.guardian_middle_name }} {{ student.guardian_last_name }}</p>
+                                <p><strong>Relation:</strong> {{ student.relation_to_student }}</p>
+                                <p><strong>Phone Number:</strong> {{ student.guardian_phone_number }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Education Section - Secondary Level</h5>
+                            <div class="info-block">
+                                <!-- Secondary level education details -->
+                                <p><strong>School Name:</strong> {{ student.secondary_school_name }}</p>
+                                <p><strong>Year of Completion:</strong> {{ student.secondary_year_completion }}</p>
+                                <p><strong>CGPA:</strong> {{ student.secondary_cgpa }}</p>
+                                <p><strong>District:</strong> {{ student.secondary_district }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Education Section - Higher Secondary Level</h5>
+                            <div class="info-block">
+                                <!-- Higher secondary level education details -->
+                                <p><strong>College Name:</strong> {{ student.higher_secondary_school_name }}</p>
+                                <p><strong>Year of Completion:</strong> {{ student.higher_secondary_year_completion }}</p>
+                                <p><strong>CGPA:</strong> {{ student.higher_secondary_cgpa }}</p>
+                                <p><strong>District:</strong> {{ student.higher_secondary_district }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Permanent Address</h5>
+                            <div class="info-block">
+                                <!-- Permanent address details -->
+                                <p><strong>Province:</strong> {{ student.permanent_province }}</p>
+                                <p><strong>Address:</strong> {{student.permanent_municipality}}-{{student.permanent_ward_no}},{{student.permanent_district}}</p>
+                                <p><strong>Zip Code:</strong> {{ student.permanent_zip_code }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="card-subtitle mb-3">Temporary Address</h5>
+                            <div class="info-block">
+                                <!-- Temporary address details -->
+                                <p><strong>Province:</strong> {{ student.temporary_province }}</p>
+                                <p><strong>Address:</strong> {{student.temporary_municipality}}-{{student.temporary_ward_no}},{{student.temporary_district}}</p>
+                                <p><strong>Zip Code:</strong> {{ student.temporary_zip_code }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="signature-section">
+                        <img src="/media/uploads/signature/S_{{ student.form_name }}" alt="Student Signature" class="img-fluid rounded mb-3" style="height:100px;width:100px;">
+                        <p class="text-muted">Student Signature</p>
+                    </div>
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <form method="post" action="/search">
+                                {% csrf_token %}
+                                <input type="hidden" name="edit" value="{{ student.id }}">
+                                <button type="submit" class="btn btn-primary mx-2">Edit</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form method="post" action="/search">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete" value="{{ student.id }}">
+                                <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% endblock body %}

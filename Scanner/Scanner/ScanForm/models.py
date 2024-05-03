@@ -3,28 +3,52 @@ from django.utils import timezone
 
 
 class ClientDetails(models.Model):
-    user_id = models.CharField(max_length=255)
-    form_name = models.CharField(max_length=255)
-    first_name = models.CharField(max_length=255)
-    middle_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    citizenship_no = models.CharField(max_length=255)
-    email = models.CharField(max_length=255)
-    issued_district = models.CharField(max_length=255)
-    issued_date = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255,default="123456789")
-    first_name_nominee = models.CharField(max_length=255)
-    middle_name_nominee = models.CharField(max_length=255)
-    last_name_nominee = models.CharField(max_length=255)
-    citizenship_no_nominee = models.CharField(max_length=255)
-    temp_district = models.CharField(max_length=255)
-    temp_house_no = models.CharField(max_length=255)
-    temp_vdc = models.CharField(max_length=255)
-    temp_ward_no = models.CharField(max_length=255)
-    perm_user_id = models.CharField(max_length=255)
-    perm_district = models.CharField(max_length=255)
-    perm_house_no = models.CharField(max_length=255)
-    perm_vdc = models.CharField(max_length=255)
-    perm_ward_no = models.CharField(max_length=255)
-    uploaded_date = models.DateTimeField(null=True)
-    status = models.CharField(default="pending",max_length=255)
+    user_id = models.CharField(max_length=100,null=True)
+    form_name = models.CharField(max_length=100,null=True)
+    uploaded_time = models.DateTimeField(default=timezone.now)
+
+    #general information
+    first_name = models.CharField(max_length=100, null=True)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(null=True)
+    phone_number = models.CharField(max_length=100, null=True)
+    date_of_birth = models.CharField(max_length=100, null=True)
+    gender = models.CharField(max_length=100, null=True)
+    citizenship_number = models.CharField(max_length=20, null=True)
+
+    # Course for Enrollment
+    course = models.CharField(max_length=100, null=True)
+
+    # Guardian Information
+    guardian_first_name = models.CharField(max_length=100, null=True)
+    guardian_middle_name = models.CharField(max_length=100, blank=True, null=True)
+    guardian_last_name = models.CharField(max_length=100, null=True)
+    guardian_phone_number = models.CharField(max_length=100, null=True)
+    relation_to_student = models.CharField(max_length=100, null=True)
+
+    # Education Section - Secondary Level
+    secondary_school_name = models.CharField(max_length=100, null=True)
+    secondary_year_completion = models.CharField(max_length=100, null=True)
+    secondary_cgpa = models.CharField(max_length=100, null=True)
+    secondary_district = models.CharField(max_length=100, null=True)
+
+    # Education Section - Higher Secondary Level
+    higher_secondary_school_name = models.CharField(max_length=100, null=True)
+    higher_secondary_year_completion = models.CharField(max_length=100, null=True)
+    higher_secondary_cgpa = models.CharField(max_length=100, null=True)
+    higher_secondary_district = models.CharField(max_length=100, null=True)
+
+    # Permanent Address
+    permanent_province = models.CharField(max_length=100, null=True)
+    permanent_district = models.CharField(max_length=100, null=True)
+    permanent_municipality = models.CharField(max_length=100, null=True)
+    permanent_ward_no = models.CharField(max_length=100, null=True)
+    permanent_zip_code = models.CharField(max_length=100, null=True)
+
+    # Temporary Address
+    temporary_province = models.CharField(max_length=100, null=True)
+    temporary_district = models.CharField(max_length=100, null=True)
+    temporary_municipality = models.CharField(max_length=100, null=True)
+    temporary_ward_no = models.CharField(max_length=100, null=True)
+    temporary_zip_code = models.CharField(max_length=100, null=True)

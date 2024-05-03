@@ -4,6 +4,7 @@ from Form_Detection import predictTheWords as pw
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class getTheWords():
 
     def __init__(self,image):
@@ -22,10 +23,10 @@ class getTheWords():
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
 
-            final_image = pw.pre_process_seperated_img(cropped_image)
+            final_image = pw.pre_process_img(cropped_image)
 
+            # print(np.sum(final_image))
             if np.sum(final_image) > 10000:
-                # cv2.imwrite("Pictures/"+str(points[0][0])+".jpg",final_image)
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # plt.imshow(final_image,cmap="gray")
@@ -45,7 +46,7 @@ class getTheWords():
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
 
-            final_image = pw.pre_process_seperated_img(cropped_image)
+            final_image = pw.pre_process_img(cropped_image)
 
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
@@ -72,11 +73,8 @@ class getTheWords():
 
             final_image = pw.pre_process_seperated_img(cropped_image)
 
-            # plt.imshow(final_image,cmap="gray")
-            # plt.show()
-
             # # print(np.sum(final_image))
-            if np.sum(final_image) > 1000:
+            if np.sum(final_image) > 10000:
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # plt.imshow(final_image,cmap="gray")
@@ -131,7 +129,7 @@ class getTheWords():
             final_image = pw.pre_process_seperated_img(last_image)
             
             # print(np.sum(final_image))
-            if (np.sum(final_image) > 45000):
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # Display the segmented characters
@@ -151,7 +149,7 @@ class getTheWords():
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
 
-            final_image = pw.pre_process_seperated_img(cropped_image)
+            final_image = pw.pre_process_img(cropped_image)
 
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
@@ -180,7 +178,7 @@ class getTheWords():
         for contour in contours:
             x, y, w, h = cv2.boundingRect(contour)
             last_image = cropped_image[y:y+h, x:x+w]
-            final_image = pw.pre_process_img(last_image)
+            final_image = pw.pre_process_seperated_img(last_image)
             
             # print(np.sum(final_image))
             if (np.sum(final_image) > 30000):
@@ -278,7 +276,7 @@ class getTheWords():
             # Crop the rectangular region from the image
             cropped_image = self.image[y1:y2, x1:x2]
 
-            final_image = pw.pre_process_seperated_img(cropped_image)
+            final_image = pw.pre_process_img(cropped_image)
 
             # plt.imshow(final_image,cmap="gray")
             # plt.show()
@@ -373,7 +371,7 @@ class getTheWords():
         for contour in contours:
             x, y, w, h = cv2.boundingRect(contour)
             last_image = cropped_image[y:y+h, x:x+w]
-            final_image = pw.pre_process_img(last_image)
+            final_image = pw.pre_process_seperated_img(last_image)
             
             # print(np.sum(final_image))
             if (np.sum(final_image) > 10000):
@@ -401,7 +399,7 @@ class getTheWords():
         for contour in contours:
             x, y, w, h = cv2.boundingRect(contour)
             last_image = cropped_image[y:y+h, x:x+w]
-            final_image = pw.pre_process_img(last_image)
+            final_image = pw.pre_process_seperated_img(last_image)
             
             # print(np.sum(final_image))
             if (np.sum(final_image) > 10000):
@@ -583,10 +581,10 @@ class getTheWords():
 
     
 def main():
-    image = cv2.imread("Forms/output_5.jpg")
+    image = cv2.imread("Forms/output_herum.jpg")
     image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     getter = getTheWords(image)
-    ans = getter.getTempDistrict()
+    ans = getter.getTempVDC()
     print("Answer is : ",ans)
 
 if __name__ == "__main__":

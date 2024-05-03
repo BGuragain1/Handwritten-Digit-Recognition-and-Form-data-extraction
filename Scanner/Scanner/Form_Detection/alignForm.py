@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def alignForm(image2):
     # Convert images to grayscale
-    image1 = cv2.imread('Form_Detection/Forms/output_4.jpg')
+    image1 = cv2.imread('Form_Detection/Forms/output_herum.jpg')
     gray2= image2
 
     gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
@@ -22,7 +22,7 @@ def alignForm(image2):
     matches = sorted(matches, key=lambda x: x.distance)
 
     # Select top matches
-    num_good_matches = 200
+    num_good_matches = 500
     good_matches = matches[:num_good_matches]
 
     # Extract corresponding keypoints
