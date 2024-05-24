@@ -10,10 +10,10 @@ urlpatterns = [
     path('signup', views.signup,name="signup"),
     path('logout', views.logout_view,name="logout"),
     path('home',views.homePage,name="homePage"),
-    path('edit',views.editForm,name="editForm"),
-    path('form',views.details,name="details"),
+    path('form',views.forms,name="forms"),
     path('search',views.searchDetails,name="searchDetails"),
     path('student',views.addStudents,name="addStudents"),
     path('formPhoto',views.uploadForms, name="uploadForms"),
-    path('details',views.viewDetails,name="viewDetails")
+    path('details',views.viewDetails,name="viewDetails"),
+    path('activate_account/', views.activate_account, name='activate_account'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL1, document_root=settings.MEDIA_ROOT1)+ static(settings.MEDIA_URL2, document_root=settings.MEDIA_ROOT2)

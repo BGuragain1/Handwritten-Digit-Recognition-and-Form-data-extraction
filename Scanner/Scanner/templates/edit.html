@@ -17,12 +17,22 @@ h3 {
     margin-top: 30px; /* Add margin for better separation */
     margin-bottom: 20px; /* Add margin for better separation */
 }
+.form-section{
+    text-align : center;
+}
+
 
 </style>
 <main class="container py-4">
     <h2>Edit The Student</h2>
     <form method="POST">
         {% csrf_token %}
+        <h3>Forms</h3>
+        <div class="form-section">
+            <img src="../media/uploads/form_pic/{{student.form_name}}_1.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:600px;width:500px;">
+            <img src="../media/uploads/form_pic/{{student.form_name}}_2.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:600px;width:500px;">
+            <p class="text-muted">Forms</p>
+        </div>
         <h3>General Information</h3>
         <div class="form-row">
             <div class="form-group col-md-4">
@@ -51,7 +61,7 @@ h3 {
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="dob">Date of Birth</label>
-                <input type="date" class="form-control" id="dob" name="date_of_birth" value="{{ student.date_of_birth }}" required>
+                <input type="text" class="form-control" id="dob" name="date_of_birth" value="{{ student.date_of_birth }}" required>
             </div>
             <div class="form-group col-md-6">
                 <label for="gender">Gender</label>
@@ -103,21 +113,31 @@ h3 {
         </div>
         <h3>Education Section - Secondary Level</h3>
         <div class="form-group">
-            <label for="secondarySchoolName">School/College Name</label>
+            <label for="secondarySchoolName">School Name</label>
             <input type="text" class="form-control" id="secondarySchoolName" name="secondary_school_name" value="{{ student.secondary_school_name }}" required>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="secondaryYearCompletion">Year of Completion</label>
-                <input type="text" class="form-control" id="secondaryYearCompletion" name="secondary_year_completion" value="{{ student.secondary_year_completion }}" required>
+                <input type="text" class="form-control" id="secondaryYearCompletion" name="secondaryYearCompletion" value = "{{student.secondary_year_completion}}" required>
             </div>
             <div class="form-group col-md-4">
                 <label for="secondaryCGPA">CGPA</label>
-                <input type="text" class="form-control" id="secondaryCGPA" name="secondary_cgpa" value="{{ student.secondary_cgpa }}" required>
+                <input type="text" class="form-control" id="secondaryCGPA" name="secondaryCGPA" value="{{student.secondary_cgpa}}" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="SecondaryDistrict">District</label>
+                <input type="text" class="form-control" id="SecondaryDistrict" name="SecondaryDistrict" value="{{student.secondary_district}}"required>
             </div>
             <div class="form-group col-md-4">
-                <label for="secondaryDistrict">District</label>
-                <input type="text" class="form-control" id="secondaryDistrict" name="secondary_district" value="{{ student.secondary_district }}" required>
+                <label for="SecondaryMunicipality">Municipality</label>
+                <input type="text" class="form-control" id="SecondaryMunicipality" name="SecondaryMunicipality" value="{{student.secondary_municipality}}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="SecondaryWard">Ward No </label>
+                <input type="text" class="form-control" id="SecondaryWard" name="SecondaryWard" value="{{student.secondary_wardno}}" required>
             </div>
         </div>
         <h3>Education Section - Higher Secondary Level</h3>
@@ -135,8 +155,22 @@ h3 {
                 <input type="text" class="form-control" id="higherSecondaryCGPA" name="higher_secondary_cgpa" value="{{ student.higher_secondary_cgpa }}" required>
             </div>
             <div class="form-group col-md-4">
-                <label for="higherSecondaryDistrict">District</label>
-                <input type="text" class="form-control" id="higherSecondaryDistrict" name="higher_secondary_district" value="{{ student.higher_secondary_district }}" required>
+                <label for="higherSecondaryfaculty">Faculty</label>
+                <input type="text" class="form-control" id="higherSecondaryfaculty" name="higherSecondaryfaculty" value="{{ student.higher_secondary_faculty }}" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryYearCompletion">District</label>
+                <input type="text" class="form-control" id="higherSecondaryDistrict" name="higherSecondaryDistrict" value="{{student.higher_secondary_district}}"required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryCGPA">Municipality</label>
+                <input type="text" class="form-control" id="higherSecondaryMunicipality" name="higherSecondaryMunicipality" value="{{student.higher_secondary_municipality}}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryDistrict">Ward No </label>
+                <input type="text" class="form-control" id="higherSecondaryWard" name="higherSecondaryWard" value="{{student.higher_secondary_wardno}}" required>
             </div>
         </div>
         <h3>Permanent Address</h3>
@@ -157,8 +191,8 @@ h3 {
             <input type="text" class="form-control" id="permanentWardNo" name="permanent_ward_no" value="{{ student.permanent_ward_no }}" required>
         </div>
         <div class="form-group">
-            <label for="permanentZipCode">Zip Code</label>
-            <input type="text" class="form-control" id="permanentZipCode" name="permanent_zip_code" value="{{ student.permanent_zip_code }}" required>
+            <label for="permanenttole">Tole</label>
+            <input type="text" class="form-control" id="permanenttole" name="permanenttole" value="{{student.permanent_tole}}" required>
         </div>
         <h3>Temporary Address</h3>
         <div class="form-group">
@@ -178,8 +212,8 @@ h3 {
             <input type="text" class="form-control" id="temporaryWardNo" name="temporary_ward_no" value="{{ student.temporary_ward_no }}" required>
         </div>
         <div class="form-group">
-            <label for="temporaryZipCode">Zip Code</label>
-            <input type="text" class="form-control" id="temporaryZipCode" name="temporary_zip_code" value="{{ student.temporary_zip_code }}" required>
+            <label for="temporarytole">Tole</label>
+            <input type="text" class="form-control" id="temporarytole" name="temporary_tole"  value="{{ student.temporary_tole }}" required>
         </div>
         <form method="post" action="/search">
             {% csrf_token %}

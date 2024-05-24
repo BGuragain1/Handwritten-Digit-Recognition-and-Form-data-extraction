@@ -72,6 +72,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Scanner.wsgi.application'
 
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True 
+EMAIL_HOST_USER = 'guragainbigyan123@gmail.com' 
+EMAIL_HOST_PASSWORD = 'pdsm qzqo dtzv xkou'
+DEFAULT_FROM_EMAIL = 'guragainbigyan123@gmail.com' 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -87,25 +95,24 @@ DATABASES = {
     }
 }
 
-
+AUTH_USER_MODEL = 'ScanForm.User'
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

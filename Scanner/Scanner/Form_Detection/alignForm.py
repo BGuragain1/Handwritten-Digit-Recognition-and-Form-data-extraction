@@ -3,9 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def alignForm(image2):
+def alignForm(image2,n):
     # Convert images to grayscale
-    image1 = cv2.imread('Form_Detection/Forms/output_herum.jpg')
+    if n == 1:
+        image1 = cv2.imread('Form_Detection/Forms/output1.jpg')
+    else :
+        image1 = cv2.imread("Form_Detection/Forms/output2.jpg")
+
     gray2= image2
 
     gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
@@ -38,10 +42,10 @@ def alignForm(image2):
     return aligned_image
 
 def main():
-    image = alignForm(cv2.imread('Forms/Processed_form.jpg'))
+    image = alignForm(cv2.imread('Forms/output_9.jpg'))
     plt.imshow(image)
     plt.show()
-    cv2.imwrite("Forms/Try.jpg",image)
+    cv2.imwrite("Forms/output_9.jpg",image)
 
 if __name__ == "__main__":
     main()

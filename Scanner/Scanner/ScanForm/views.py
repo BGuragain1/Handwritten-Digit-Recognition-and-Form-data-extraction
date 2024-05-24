@@ -4,11 +4,20 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
 import os
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.crypto import get_random_string
+from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
+from binascii import Error as BinasciiError
+from django.core.mail import send_mail
 from Form_Detection import app
 from . import utils
 import numpy as np
 import json
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # Create your views here.
 def startPage(request):
@@ -19,11 +28,12 @@ def Login(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         
-          # Authenticate user
+        # Authenticate user
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
             login(request,user)
+            messages.success(request, 'Login Sucessfully')
             return redirect("homePage")
         else:
             messages.error(request,"Invalid Username or Password")
@@ -49,23 +59,66 @@ def signup(request):
             else:
                 user = User.objects.create_user(username= username1,email=email1,first_name = first_name, last_name = last_name,
                                                 password=password1)
+                user.is_active = False
                 user.save()
-                messages.info(request,"Sign Up Successfully")
+                send_verification_email(request, user)
+                messages.success(request,"Sign Up Successfully.Please Check Your email for verification")
                 return redirect("login")
         else:
             messages.info(request,"Passwords do not match")
             return redirect("signup")
     else:
         return render(request, "signup.html")
+    
+def send_verification_email(request, user):
+    current_site = get_current_site(request)
+    mail_subject = 'Activate your account.'
+    token = get_random_string(20)
+    user.verification_token = token
+    user.save()
+    
+    verification_link = f"http://{current_site.domain}/activate_account/?uid={urlsafe_base64_encode(force_bytes(user.pk))}&token={token}"
+    
+    message = render_to_string('verification_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'verification_link': verification_link,
+    })
+    
+    to_email = user.email
+    send_mail(mail_subject, message, 'guragainbigyan123@gmail.com', [to_email],html_message=message)
 
+def activate_account(request):
+
+    uidb64 = request.GET.get('uid')
+    token = request.GET.get('token')
+
+    try:
+        # Decoding uidb64 to get the user ID
+        uid = urlsafe_base64_decode(uidb64)
+        uid = uid.decode('utf-8')
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist, BinasciiError):
+        user = None
+
+    if user is not None and user.verification_token == token:
+        user.is_active = True
+        user.verification_token = None
+        user.save()
+        messages.success(request, 'Your account has been activated successfully.')
+        return redirect('login')
+    else:
+        messages.error(request, 'Activation link is invalid or expired.')
+        return redirect('login')
+    
 def logout_view(request):
     logout(request)
-    request.session.flush()  
+    request.session.flush() 
+    messages.success(request,"Logged Out Successfully") 
     return redirect('login')
 
 @login_required
 def homePage(request):
-    messages.success(request, 'Login Sucessfully')
     return render(request, "home.html")
 
 @login_required
@@ -96,41 +149,47 @@ def addStudents(request):
                 'name': request.POST.get('secondarySchoolName'),
                 'year_completion': request.POST.get('secondaryYearCompletion'),
                 'cgpa': request.POST.get('secondaryCGPA'),
-                'district': request.POST.get('secondaryDistrict')
+                'district': request.POST.get('SecondaryDistrict'),
+                'municipality': request.POST.get('SecondaryMunicipality'),  
+                'ward_no': request.POST.get('SecondaryWard')  
             },
             'higher_secondary_school': {
                 'name': request.POST.get('higherSecondarySchoolName'),
                 'year_completion': request.POST.get('higherSecondaryYearCompletion'),
                 'cgpa': request.POST.get('higherSecondaryCGPA'),
-                'district': request.POST.get('higherSecondaryDistrict')
+                'faculty': request.POST.get('higherSecondaryfaculty'),
+                'district': request.POST.get('higherSecondaryDistrict'),
+                'municipality': request.POST.get('higherSecondaryMunicipality'),
+                'ward_no': request.POST.get('higherSecondaryWard')
             },
             'permanent_address': {
                 'province': request.POST.get('permanentProvince'),
                 'district': request.POST.get('permanentDistrict'),
                 'municipality': request.POST.get('permanentMunicipality'),
                 'ward_no': request.POST.get('permanentWardNo'),
-                'zip_code': request.POST.get('permanentZipCode')
+                'tole': request.POST.get('permanenttole')
             },
             'temporary_address': {
                 'province': request.POST.get('temporaryProvince'),
                 'district': request.POST.get('temporaryDistrict'),
                 'municipality': request.POST.get('temporaryMunicipality'),
                 'ward_no': request.POST.get('temporaryWardNo'),
-                'zip_code': request.POST.get('temporaryZipCode')
+                'tole': request.POST.get('temporary_tole')
             },
         }
+
         photo_file = request.FILES.get('photo')
         signature_file = request.FILES.get('signature')
         
         if photo_file:
             photo_directory = 'media/uploads/photo'
-            with open(os.path.join(photo_directory, "P_"+str(form_name)), 'wb+') as destination:
+            with open(os.path.join(photo_directory, "P_"+str(form_name)+".jpg"), 'wb+') as destination:
                 for chunk in photo_file.chunks():
                     destination.write(chunk)
 
         if signature_file:
             signature_directory = 'media/uploads/signature'
-            with open(os.path.join(signature_directory, "S_"+str(form_name)), 'wb+') as destination:
+            with open(os.path.join(signature_directory, "S_"+str(form_name)+".jpg"), 'wb+') as destination:
                 for chunk in signature_file.chunks():
                     destination.write(chunk)
         json_data = json.dumps(data)
@@ -144,87 +203,6 @@ def addStudents(request):
 @login_required
 def uploadForms(request):
     return render(request,"formPhoto.html")
-
-
-@login_required
-def editForm(request):
-    if request.method == "POST":
-        if "edit" in request.POST:
-            form_name = request.POST.get("edit")
-            data = utils.getDetails(form_name)
-            return render(request, "edit.html", {"data": data, "id":form_name,"image_path": "media/uploads/form_pic/" + str(form_name)})
-        
-        elif "submit" in request.POST:
-            form_id = request.POST.get('submit')
-            utils.updateData(form_id,request.POST.get("first_name"),
-                             request.POST.get("middle_name"),
-                             request.POST.get("last_name"),
-                             request.POST.get("citizenship_no"),
-                             request.POST.get("issued_date"),
-                             request.POST.get("email"),
-                             request.POST.get("phone_number"),
-                             request.POST.get("issued_district"),
-                             request.POST.get("nominee_first_name"),
-                             request.POST.get("nominee_middle_name"),
-                             request.POST.get("nominee_last_name"),
-                             request.POST.get("nominee_citizenship_no"),
-                             request.POST.get("temp_district"),
-                             request.POST.get("temp_house_no"),
-                             request.POST.get("temp_vdc"),
-                             request.POST.get("temp_ward_no"),   
-                             request.POST.get("perm_district"),
-                             request.POST.get("perm_house_no"),
-                             request.POST.get("perm_vdc"),
-                             request.POST.get("perm_ward_no"),                          
-                             )
-    return redirect("homePage")
-
-@login_required
-def details(request):
-    if request.method == "POST":
-        user_id = request.user.id
-        # Check if a file was uploaded
-        if 'imageUpload' in request.FILES:
-            image = request.FILES["imageUpload"] 
-            image_name = np.random.rand()
-            file_path = os.path.join(settings.MEDIA_ROOT, str(image_name))
-            with open(file_path, 'wb') as f:
-                for chunk in image.chunks():
-                    f.write(chunk)  
-
-            data = app.predict_from_form(file_path,image_name)
-            utils.insertData(data,user_id,image_name)
-            return render(request, "form.html", {'image_path': "../media/uploads/form_pic/"+str(image_name),'image_name':image_name,'data':data})
-
-        elif "cancel" in request.POST:
-            form_name = request.POST.get('cancel')
-            utils.deleteClient_name(form_name)
-            return redirect('homePage')
-
-        elif "save" in request.POST:
-            form_name = request.POST.get('save')
-            utils.updateData(form_name,request.POST.get("first_name"),
-                             request.POST.get("middle_name"),
-                             request.POST.get("last_name"),
-                             request.POST.get("citizenship_no"),
-                             request.POST.get("issued_date"),
-                             request.POST.get("email"),
-                             request.POST.get("phone_number"),
-                             request.POST.get("issued_district"),
-                             request.POST.get("nominee_first_name"),
-                             request.POST.get("nominee_middle_name"),
-                             request.POST.get("nominee_last_name"),
-                             request.POST.get("nominee_citizenship_no"),
-                             request.POST.get("temp_district"),
-                             request.POST.get("temp_house_no"),
-                             request.POST.get("temp_vdc"),
-                             request.POST.get("temp_ward_no"),   
-                             request.POST.get("perm_district"),
-                             request.POST.get("perm_house_no"),
-                             request.POST.get("perm_vdc"),
-                             request.POST.get("perm_ward_no"),                          
-                             )
-            return redirect('homePage')
 
 @login_required
 def searchDetails(request):
@@ -246,7 +224,7 @@ def searchDetails(request):
             'last_name': request.POST.get('last_name'),
             'email': request.POST.get('email'),
             'phone_number': request.POST.get('phone_number'),
-            'dob': request.POST.get('date_of_birth'),
+            'dob': request.POST.get('dob'),
             'gender': request.POST.get('gender'),
             'citizenship_number': request.POST.get('citizenship_number'),
             'course': request.POST.get('course'),
@@ -259,29 +237,34 @@ def searchDetails(request):
             },
             'secondary_school': {
                 'name': request.POST.get('secondary_school_name'),
-                'year_completion': request.POST.get('secondary_year_completion'),
-                'cgpa': request.POST.get('secondary_cgpa'),
-                'district': request.POST.get('secondary_district')
+                'year_completion': request.POST.get('secondaryYearCompletion'),
+                'cgpa': request.POST.get('secondaryCGPA'),
+                'district': request.POST.get('SecondaryDistrict'),
+                'municipality': request.POST.get('SecondaryMunicipality'),
+                'ward_no': request.POST.get('SecondaryWard')
             },
             'higher_secondary_school': {
                 'name': request.POST.get('higher_secondary_school_name'),
-                'year_completion': request.POST.get('higher_secondary_year_completion'),
-                'cgpa': request.POST.get('higher_secondary_cgpa'),
-                'district': request.POST.get('higher_secondary_district')
+                'year_completion': request.POST.get('higherSecondaryYearCompletion'),
+                'cgpa': request.POST.get('higherSecondaryCGPA'),
+                'faculty': request.POST.get('higherSecondaryfaculty'),
+                'district': request.POST.get('higherSecondaryDistrict'),
+                'municipality': request.POST.get('higherSecondaryMunicipality'),
+                'ward_no': request.POST.get('higherSecondaryWard')
             },
             'permanent_address': {
                 'province': request.POST.get('permanent_province'),
                 'district': request.POST.get('permanent_district'),
                 'municipality': request.POST.get('permanent_municipality'),
-                'ward_no': request.POST.get('permanent_municipality'),
-                'zip_code': request.POST.get('permanent_zip_code')
+                'ward_no': request.POST.get('permanent_ward_no'),
+                'tole': request.POST.get('permanenttole')
             },
             'temporary_address': {
                 'province': request.POST.get('temporary_province'),
                 'district': request.POST.get('temporary_district'),
                 'municipality': request.POST.get('temporary_municipality'),
                 'ward_no': request.POST.get('temporary_ward_no'),
-                'zip_code': request.POST.get('temporary_zip_code')
+                'tole': request.POST.get('temporary_tole')
             },
         }
         json_data = json.dumps(datas)
@@ -294,3 +277,34 @@ def viewDetails(request):
     id = request.POST.get("detail")
     data = utils.getSpecified(id)
     return render(request,"details.html",{"student":data})
+
+@login_required
+def forms(request):
+    if request.method == "POST":
+        if 'form1' and 'form2' in request.FILES:
+            image1 = request.FILES["form1"]
+            image2 = request.FILES["form2"]
+            image_name = np.random.rand()
+            image_path1 = os.path.join(settings.MEDIA_ROOT, f"{image_name}_1.jpg")
+            image_path2 = os.path.join(settings.MEDIA_ROOT, f"{image_name}_2.jpg")
+
+            with open(image_path1, 'wb') as f1, open(image_path2, 'wb') as f2:
+                for chunk1, chunk2 in zip(image1.chunks(), image2.chunks()):
+                    f1.write(chunk1)
+                    f2.write(chunk2)
+
+            data = app.predict_from_form(image_path1, image_path2, str(image_name))   
+            utils.insertFormData(data,image_name,request.user.id)        
+            return redirect("searchDetails")
+        
+        elif "save" in request.POST:
+            return render(request,"uploadForm.html")
+            
+        elif "cancel" in request.POST:
+            utils.deleteForm(request.POST.get("cancel"))
+            return render(request,"uploadForm.html")
+
+        elif "delete" in request.POST:
+            name = request.POST.get("delete")
+            utils.deleteForm(name)
+            return render(request,"home.html")

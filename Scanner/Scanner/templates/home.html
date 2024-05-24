@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Home Page{% endblock title %}
 {% block body %}
+<style>
+    footer {
+        position: fixed;
+    }
+</style>
 <main class="container py-4">
         <section>
             <h2>Welcome {{user.first_name}} !!!</h2>
@@ -10,6 +15,7 @@
                 <li><a href="/student">Add Student Manually</a></li>
                 <li><a href="/formPhoto">Add Student via Form Upload</a></li>
                 <li><a href="/search">View Student Records</a></li>
+                <li><a href="#">About</a></li>
             </ul>
         </section>
     </main>

@@ -1,5 +1,202 @@
 {% extends 'base.html' %}
 {% block title %}Form Page{% endblock title %}
 {% block body %}
+<style>
+/* Darken the form boxes */
+form {
+    background-color: #343a40; /* Dark background color */
+    color: #fff; /* Light text color */
+    padding: 20px; /* Add padding for better readability */
+}
 
+/* Darken the section topics */
+h3 {
+    background-color: #212529; /* Dark background color */
+    color: #fff; /* Light text color */
+    padding: 10px; /* Add padding for better appearance */
+    margin-top: 30px; /* Add margin for better separation */
+    margin-bottom: 20px; /* Add margin for better separation */
+}
+
+</style>
+<main class="container py-4">
+    <form method="POST">
+        {%csrf_token%}
+        <!-- General Information -->
+        <h3>General Information</h3>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" value="{{ data.first_name }}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="middleName">Middle Name</label>
+                <input type="text" class="form-control" id="middleName" name="middleName" value="{{ data.middle_name }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" value="{{ data.last_name }}" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ data.email_1 }}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="{{ data.phone_number }}" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="dob">Date of Birth</label>
+                <input type="text" class="form-control" id="dob" name="dob" value="{{ data.date_of_birth }}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <option value="">Select Gender</option>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option value="male" {% if data.gender == 'male' %}selected{% endif %}>Male</option>
+                    <option value="female" {% if data.gender == 'female' %}selected{% endif %}>Female</option>
+                    <option value="other" {% if data.gender == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="citizenshipNumber">Citizenship Number</label>
+            <input type="text" class="form-control" id="citizenshipNumber" name="citizenshipNumber" value="{{ data.citizen_number }}" required>
+        </div>
+        <!-- Course for Enrollment -->
+        <h3>Course for Enrollment</h3>
+        <div class="form-group">
+            <option value="">Select Course</option>
+            <select class="form-control" id="course" name="course" required>
+                <option value="BSc Computer Science" {% if data.course == 'BSc Computer Science' %}selected{% endif %}>BSc Computer Science</option>
+                <option value="BBA/BBS" {% if data.course == 'BBA/BBS' %}selected{% endif %}>BBA/BBS</option>
+                <option value="IMBA" {% if data.course == 'IMBA' %}selected{% endif %}>IMBA</option>
+                <option value="Other" {% if data.course == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        <!-- Guardian Information -->
+        <h3>Guardian Information</h3>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="guardianFirstName">First Name</label>
+                <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" value="{{ data.guardian_first_name }}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="guardianMiddleName">Middle Name</label>
+                <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName" value="{{ data.guardian_middle_name }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="guardianLastName">Last Name</label>
+                <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" value="{{ data.guardian_last_name }}" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="guardianPhoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="guardianPhoneNumber" name="guardianPhoneNumber" value="{{ data.guardian_phone }}" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="relation">Relation to Student</label>
+                <input type="text" class="form-control" id="relation" name="relation" value="{{ data.relation }}" required>
+            </div>
+        </div>
+        <!-- Education Section -->
+        <h3>Education Section</h3>
+        <!-- Secondary Level -->
+        <h4>Secondary Level</h4>
+        <div class="form-group">
+            <label for="secondarySchoolName">School/College Name</label>
+            <input type="text" class="form-control" id="secondarySchoolName" name="secondarySchoolName" value="{{ data.school }}" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="secondaryYearCompletion">Year of Completion</label>
+                <input type="text" class="form-control" id="secondaryYearCompletion" name="secondaryYearCompletion" value="{{ data.graduation_year }}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="secondaryCGPA">CGPA</label>
+                <input type="text" class="form-control" id="secondaryCGPA" name="secondaryCGPA" value="{{ data.cgpa }}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="secondaryDistrict">Address</label>
+                <input type="text" class="form-control" id="secondaryDistrict" name="secondaryDistrict" value="{{ data.municipality}}-{{data.ward}}{{data.district }}" required>
+            </div>
+        </div>
+        <!-- Higher Secondary Level -->
+        <h4>Higher Secondary Level</h4>
+        <div class="form-group">
+            <label for="higherSecondarySchoolName">School/College Name</label>
+            <input type="text" class="form-control" id="higherSecondarySchoolName" name="higherSecondarySchoolName" value="{{ data.high_school }}" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryYearCompletion">Year of Completion</label>
+                <input type="text" class="form-control" id="higherSecondaryYearCompletion" name="higherSecondaryYearCompletion" value="{{ data.high_school_graduation_year }}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryCGPA">CGPA</label>
+                <input type="text" class="form-control" id="higherSecondaryCGPA" name="higherSecondaryCGPA" value="{{ data.high_school_cgpa }}" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="higherSecondaryDistrict">Address</label>
+                <input type="text" class="form-control" id="higherSecondaryDistrict" name="higherSecondaryDistrict" value="{{ data.high_school_municipality}}-{{data.high_school_ward}}{{data.high_school_district }}" required>
+            </div>
+        </div>
+        <!-- Permanent Address -->
+        <h3>Permanent Address</h3>
+        <div class="form-group">
+            <label for="permanentProvince">Province</label>
+            <input type="text" class="form-control" id="permanentProvince" name="permanentProvince" value="{{ data.permanent_province }}" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentDistrict">District</label>
+            <input type="text" class="form-control" id="permanentDistrict" name="permanentDistrict" value="{{ data.permanent_district }}" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentMunicipality">Municipality</label>
+            <input type="text" class="form-control" id="permanentMunicipality" name="permanentMunicipality" value="{{ data.permanent_municipality }}" required>
+        </div>
+        <div class="form-group">
+            <label for="permanentWardNo">Ward No</label>
+            <input type="text" class="form-control" id="permanentWardNo" name="permanentWardNo" value="{{ data.permanent_ward }}" required>
+        </div>
+        <div class="form-group">
+            <label for="permanenttole">Tole</label>
+            <input type="text" class="form-control" id="permanenttole" name="permanenttole" value="{{ data.permanent_tole }}" required>
+        </div>
+        <!-- Temporary Address -->
+        <h3>Temporary Address</h3>
+        <div class="form-group">
+            <label for="temporaryProvince">Province</label>
+            <input type="text" class="form-control" id="temporaryProvince" name="temporaryProvince" value="{{ data.temporary_province }}" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryDistrict">District</label>
+            <input type="text" class="form-control" id="temporaryDistrict" name="temporaryDistrict" value="{{ data.temporary_district }}" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryMunicipality">Municipality</label>
+            <input type="text" class="form-control" id="temporaryMunicipality" name="temporaryMunicipality" value="{{ data.temporary_municipality }}" required>
+        </div>
+        <div class="form-group">
+            <label for="temporaryWardNo">Ward No</label>
+            <input type="text" class="form-control" id="temporaryWardNo" name="temporaryWardNo" value="{{ data.temporary_ward }}" required>
+        </div>
+        <div class="form-group">
+            <label for="temporarytole">Tole</label>
+            <input type="text" class="form-control" id="temporarytole" name="temporarytole" value="{{ data.temporary_tole }}" required>
+        </div>
+        <div class="form-group">
+            <a href="/home" class="btn btn-primary">Save</a>
+            <form method="POST" action='{% url "forms" %}'>
+                {%csrf_token%}
+                <input type="hidden" name="delete" value="{{form_name}}">
+                <button type="submit" class="btn btn-danger mx-2">Cancel</button>    
+            </form>
+        </div>
+    </form>
+</main>
 {% endblock body %}

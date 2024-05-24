@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # def preprocessImage(img):
 #     # resizing the image
-#     img = cv2.resize(img, (1500, 1200),cv2.INTER_CUBIC)
+#     img = cv2.resize(img, (1200, 1200),cv2.INTER_CUBIC)
 
 #     imgThres = img.copy()
 
@@ -72,20 +72,7 @@ import matplotlib.pyplot as plt
 #     imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
 
 #     return imgAdaptiveThre
-    
-def refine(img):
-    imgWarpColored = cv2.resize(img, (1200, 1500),cv2.INTER_CUBIC)
-    #converting to black amd white
-    imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
 
-    #Apply adaptive thresholding with a lower block size and a higher constant value to decrease the number of dots
-    imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 21)
-
-    # Invert the binary image
-    imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
-
-    return imgAdaptiveThre
-    
 # def reorder(myPoints):
 #     myPoints = myPoints.reshape((4, 2))
 #     myPointsNew = np.zeros((4, 1, 2), dtype=np.int32)
@@ -99,23 +86,33 @@ def refine(img):
 
 #     return myPointsNew
 
+def refine(img):
+    imgWarpColored = cv2.resize(img, (1200, 1200),cv2.INTER_CUBIC)
+    #converting to black amd white
+    imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY)
+    # #Apply adaptive thresholding with a lower block size and a higher constant value to decrease the number of dots
+    imgAdaptiveThre = cv2.adaptiveThreshold(imgWarpGray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 21)
+
+    # Invert the binary image
+    imgAdaptiveThre = cv2.bitwise_not(imgAdaptiveThre)
+
+    return imgAdaptiveThre
 
 heightImg = 1500
-widthImg = 1200
+widthImg = 1000
 kernel = np.ones((5, 5), np.uint8)
 
-def preprocess_image(image):
+def preprocess_image(image,n):
     # grayImage,imgThreshold = preprocessImage(image)
     # finalCorners = EdgeDetection(grayImage)
     # finalImage = gettingform(finalCorners,imgThreshold)
-    # output_image = af.alignForm(finalImage)
-    finalImage = refine(image)
-    output_image = af.alignForm(finalImage)
+    output_image = refine(image)
+    output_image = af.alignForm(output_image,n)
     return output_image
 
 def main():
-    final = preprocess_image(cv2.imread("Forms/Form8.jpg"))
-    cv2.imwrite("Forms/output_8.jpg",final)
+    final = preprocess_image(cv2.imread("Forms/Form2.jpg"))
+    cv2.imwrite("Forms/output2.jpg",final)
     plt.imshow(final)
     plt.show()
 

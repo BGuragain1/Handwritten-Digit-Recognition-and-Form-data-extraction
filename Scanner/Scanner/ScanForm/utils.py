@@ -1,4 +1,4 @@
-from ScanForm.models import ClientDetails
+from ScanForm.models import StudentDetails
 import os
 from django.utils import timezone
 import json
@@ -6,7 +6,7 @@ import json
 def insertData(data):
     parsed_data = json.loads(data)
 
-    client_details = ClientDetails(
+    client_details = StudentDetails(
         user_id=parsed_data['user_id'],
         form_name=parsed_data['form_name'],
         first_name=parsed_data['first_name'],
@@ -27,28 +27,81 @@ def insertData(data):
         secondary_year_completion=parsed_data['secondary_school']['year_completion'],
         secondary_cgpa=parsed_data['secondary_school']['cgpa'],
         secondary_district=parsed_data['secondary_school']['district'],
+        secondary_municipality=parsed_data['secondary_school']['municipality'],
+        secondary_wardno=parsed_data['secondary_school']['ward_no'],
         higher_secondary_school_name=parsed_data['higher_secondary_school']['name'],
         higher_secondary_year_completion=parsed_data['higher_secondary_school']['year_completion'],
         higher_secondary_cgpa=parsed_data['higher_secondary_school']['cgpa'],
         higher_secondary_district=parsed_data['higher_secondary_school']['district'],
+        higher_secondary_municipality=parsed_data['higher_secondary_school']['municipality'],
+        higher_secondary_wardno=parsed_data['higher_secondary_school']['ward_no'],
+        higher_secondary_faculty=parsed_data['higher_secondary_school']['faculty'],
         permanent_province=parsed_data['permanent_address']['province'],
         permanent_district=parsed_data['permanent_address']['district'],
         permanent_municipality=parsed_data['permanent_address']['municipality'],
         permanent_ward_no=parsed_data['permanent_address']['ward_no'],
-        permanent_zip_code=parsed_data['permanent_address']['zip_code'],
+        permanent_tole=parsed_data['permanent_address']['tole'],
         temporary_province=parsed_data['temporary_address']['province'],
         temporary_district=parsed_data['temporary_address']['district'],
         temporary_municipality=parsed_data['temporary_address']['municipality'],
         temporary_ward_no=parsed_data['temporary_address']['ward_no'],
-        temporary_zip_code=parsed_data['temporary_address']['zip_code']
+        temporary_tole=parsed_data['temporary_address']['tole']
     )
     client_details.uploaded_time = timezone.now()
     client_details.save()
  
+def insertFormData(data,form_name,id):
+    
+    client_details = StudentDetails(
+        user_id=id,
+        form_name=form_name,
+        first_name=data['first_name'],
+        middle_name=data['middle_name'],
+        last_name=data['last_name'],
+        email=data['email_1'],
+        phone_number=data['phone_number'],
+        date_of_birth=data['date_of_birth'],
+        gender=data['gender'],
+        citizenship_number=data['citizen_number'],
+        course=data['course'],
+        guardian_first_name=data['guardian_first_name'],
+        guardian_middle_name=data['guardian_middle_name'],
+        guardian_last_name=data['guardian_last_name'],
+        guardian_phone_number=data['guardian_phone'],
+        relation_to_student=data['relation'],
+        secondary_school_name=data['school'],
+        secondary_year_completion=data['graduation_year'],
+        secondary_cgpa=data['cgpa'],
+        secondary_district=data['district'],
+        secondary_municipality=data['municipality'],
+        secondary_wardno=data['ward'],
+        higher_secondary_school_name=data['high_school'],
+        higher_secondary_year_completion=data['high_school_graduation_year'],
+        higher_secondary_cgpa=data['high_school_cgpa'],
+        higher_secondary_district=data['high_school_district'],
+        higher_secondary_municipality=data['high_school_municipality'],
+        higher_secondary_faculty=data['high_school_faculty'],
+        higher_secondary_wardno=data['high_school_ward'],
+        permanent_province=data['permanent_province'],
+        permanent_district=data['permanent_district'],
+        permanent_municipality=data['permanent_municipality'],
+        permanent_ward_no=data['permanent_ward'],
+        permanent_tole=data['permanent_tole'],
+        temporary_province=data['temporary_province'],
+        temporary_district=data['temporary_district'],
+        temporary_municipality=data['temporary_municipality'],
+        temporary_ward_no=data['temporary_ward'],
+        temporary_tole=data['temporary_tole'],
+    )
+    client_details.uploaded_time = timezone.now()
+    client_details.save()
+    
+    return
 
 def updateData(data, id):
-    client = ClientDetails.objects.get(id=id)
+    client = StudentDetails.objects.get(id=id)
     data = json.loads(data)
+    
     client.first_name = data['first_name']
     client.middle_name = data['middle_name']
     client.last_name = data['last_name']
@@ -71,64 +124,72 @@ def updateData(data, id):
     client.secondary_year_completion = data['secondary_school']['year_completion']
     client.secondary_cgpa = data['secondary_school']['cgpa']
     client.secondary_district = data['secondary_school']['district']
+    client.secondary_municipality = data['secondary_school']['municipality']
+    client.secondary_wardno = data['secondary_school']['ward_no']
 
     # Higher secondary school information
     client.higher_secondary_school_name = data['higher_secondary_school']['name']
     client.higher_secondary_year_completion = data['higher_secondary_school']['year_completion']
     client.higher_secondary_cgpa = data['higher_secondary_school']['cgpa']
+    client.higher_secondary_faculty = data['higher_secondary_school']['faculty']
     client.higher_secondary_district = data['higher_secondary_school']['district']
+    client.higher_secondary_municipality = data['higher_secondary_school']['municipality']
+    client.higher_secondary_wardno = data['higher_secondary_school']['ward_no']
 
     # Permanent address information
     client.permanent_province = data['permanent_address']['province']
     client.permanent_district = data['permanent_address']['district']
     client.permanent_municipality = data['permanent_address']['municipality']
     client.permanent_ward_no = data['permanent_address']['ward_no']
-    client.permanent_zip_code = data['permanent_address']['zip_code']
+    client.permanent_tole = data['permanent_address']['tole']
 
     # Temporary address information
     client.temporary_province = data['temporary_address']['province']
     client.temporary_district = data['temporary_address']['district']
     client.temporary_municipality = data['temporary_address']['municipality']
     client.temporary_ward_no = data['temporary_address']['ward_no']
-    client.temporary_zip_code = data['temporary_address']['zip_code']
+    client.temporary_tole = data['temporary_address']['tole']
+
     client.save()
     return
 
 def deleteClient(id):
-    client = ClientDetails.objects.get(id=id)
-    os.remove("media/uploads/signature/S_"+client.form_name)
-    os.remove("media/uploads/photo/P_"+client.form_name)
+    client = StudentDetails.objects.get(id=id)
+    os.remove("media/uploads/signature/S_"+client.form_name+".jpg")
+    os.remove("media/uploads/photo/P_"+client.form_name+".jpg")
+    os.remove("media/uploads/form_pic/"+client.form_name+"_1.jpg")
+    os.remove("media/uploads/form_pic/"+client.form_name+"_2.jpg")
     client.delete()
     return True  
 
-def deleteClient_name(name):
-    client = ClientDetails.objects.get(form_name=name)
-    os.remove("media/uploads/form_pic/"+client.form_name)
-    os.remove("media/uploads/signature/S1_"+client.form_name+'.jpg')
-    os.remove("media/uploads/signature/S2_"+client.form_name+'.jpg')
-    os.remove("media/uploads/fingerprints/FR_"+client.form_name+'.jpg')
-    os.remove("media/uploads/fingerprints/FL_"+client.form_name+'.jpg')
+def deleteForm(name):
+    print(name)
+    client = StudentDetails.objects.get(form_name=name)
+    os.remove("media/uploads/signature/S_"+name+".jpg")
+    os.remove("media/uploads/photo/P_"+name+".jpg")
+    os.remove("media/uploads/form_pic/"+name+"_1.jpg")
+    os.remove("media/uploads/form_pic/"+name+"_2.jpg")
     client.delete()
-    return True 
+    return True  
 
 def getForms(id_value):
-    form_list = ClientDetails.objects.filter(user_id=id_value,status="pending")
+    form_list = StudentDetails.objects.filter(user_id=id_value,status="pending")
     return form_list
 
 def getDetails(name):
-    form_list = ClientDetails.objects.get(form_name=name)
+    form_list = StudentDetails.objects.get(form_name=name)
     return form_list
 
 def getAll():
-    data = ClientDetails.objects.all()
+    data = StudentDetails.objects.all()
     return data
 
 def getSpecified(id):
-    data = ClientDetails.objects.get(id = id)
+    data = StudentDetails.objects.get(id = id)
     return data
 
 def approve(name):
-    client = ClientDetails.objects.get(form_name=name)
+    client = StudentDetails.objects.get(form_name=name)
     client.status = "approved"
     client.save()
     return

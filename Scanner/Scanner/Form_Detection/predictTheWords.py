@@ -17,19 +17,19 @@ def pre_process_img(img):
   bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel1)
   bin_img = cv2.GaussianBlur(bin_img, (5,5), 1)
   bin_img = cv2.bilateralFilter(bin_img, 9, 75, 75) 
-  # dilated_image = cv2.dilate(bin_img, kernel1, iterations=1)
-  # bin_img = addPadding(dilated_image)
-  resized_image = cv2.resize(bin_img , (28, 28))
+  dilated_image = cv2.dilate(bin_img, kernel1, iterations=1)
+  resized_image = cv2.resize(dilated_image , (28, 28))
   return resized_image
 
 
 def pre_process_seperated_img(img):
   kernel1  = np.ones((3, 3), np.uint8)
   bin_img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 21, 21)
+  bin_img = addPadding_seperated(bin_img)
   bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel1)
   bin_img = cv2.GaussianBlur(bin_img, (5,5), 1)
   bin_img = cv2.bilateralFilter(bin_img, 9, 75, 75) 
-  bin_img = addPadding_seperated(bin_img)
+  bin_img = addPadding(bin_img)
   resized_image = cv2.resize(bin_img , (28, 28))
   return resized_image
 
@@ -61,8 +61,8 @@ def addPadding_seperated(img):
   h, w = img.shape
 
   # Define the size of the new image with black surface
-  new_h = h + 10
-  new_w = w + 10  
+  new_h = h + 5 # Add some padding (adjust as needed)
+  new_w = w + 5  # Add some padding (adjust as needed)
 
   # Create a blank black image
   black_surface = np.zeros((new_h, new_w), dtype=np.uint8)
@@ -80,8 +80,8 @@ def addPadding(img):
   h, w = img.shape
 
   # Define the size of the new image with black surface
-  new_h = h + 8
-  new_w = w + 8
+  new_h = h + 8 # Add some padding (adjust as needed)
+  new_w = w + 8  # Add some padding (adjust as needed)
 
   # Create a blank black image
   black_surface = np.zeros((new_h, new_w), dtype=np.uint8)
@@ -96,22 +96,18 @@ def addPadding(img):
   return black_surface
 
 def seperate_words(img):
-  # Apply thresholding to create a binary image
   _, binary_image = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-  # Find contours in the binary image
   contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-  # Filter potentially irrelevant contours
   filtered_contours = []
-  min_area = 10  
-  max_area = 50000  
+  min_area = 100  
+  max_area = 10000 
   for contour in contours:
       area = cv2.contourArea(contour)
       if min_area < area < max_area:
           filtered_contours.append(contour)
 
-  # Sort contours from left to right (ensure leftmost x-coordinate first)
   filtered_contours.sort(key=lambda cnt: cv2.boundingRect(cnt)[0])
 
   return filtered_contours

@@ -1,23 +1,25 @@
 {% extends 'base.html' %}
 {% block title %}Upload Forms{% endblock title %}
 {% block body %}
+<style>
+    footer {
+        position: fixed;
+    }
+</style>
 <div class="container mt-4">
     <h2>Upload Form Photos</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form action='{% url "forms" %}' method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="form1_photo">Upload Photo for Form 1:</label>
-            <input type="file" class="form-control-file" id="form1_photo" name="form1_photo" accept="image/*">
+            <input type="file" class="form-control-file" id="form1_photo" name="form1" accept="image/*">
         </div>
          <div class="form-group">
             <label for="form2_photo">Upload Photo for Form 2:</label>
-            <input type="file" class="form-control-file" id="form2_photo" name="form2_photo" accept="image/*">
+            <input type="file" class="form-control-file" id="form2_photo" name="form2" accept="image/*">
         </div>
-        <div class="form-group">
-            <label for="form3_photo">Upload Photo for Form 3:</label>
-            <input type="file" class="form-control-file" id="form3_photo" name="form3_photo" accept="image/*">
-        </div>
-        <button type="submit" class="btn btn-primary">Upload</button> 
+        <button type="submit" class="btn btn-primary" id="upload-form">Upload</button>
+        <a href="/home" class="btn btn-danger">Cancel</a>
     </form>
 </div>
 {% endblock body %}

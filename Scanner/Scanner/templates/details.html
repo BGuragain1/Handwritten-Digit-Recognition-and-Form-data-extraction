@@ -3,14 +3,6 @@
 {% block title %}Student Details{% endblock title %}
 
 {% block body %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Details</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Custom CSS for styling */
         .card {
@@ -30,23 +22,28 @@
         .photo-section {
             text-align: center;
         }
+        .form-section1{
+            text-align : left;
+        }
+        .form-section2{
+            text-align : right;
+        }
         .signature-section {
             text-align: center;
             margin-top: 20px;
         }
     </style>
-</head>
 <body>
 
 <div class="container mt-4">
     <div class="row">
         <div class="col-lg-10 offset-lg-1">
-            <a href="javascript:history.back()" class="btn btn-secondary mb-3 ml-3">Back</a>
+            <a href="/search" class="btn btn-secondary mb-3 ml-3">Back</a>
             <div class="card shadow">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Student Details</h2>
                     <div class="photo-section">
-                        <img src="/media/uploads/photo/P_{{ student.form_name }}" alt="Student Photo" class="img-fluid rounded mb-3" style="height:150px;width:130px;">
+                        <img src="../media/uploads/photo/P_{{student.form_name}}.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:150px;width:130px;">
                         <p class="text-muted">Student Photo</p>
                     </div>
                     <hr>
@@ -55,7 +52,7 @@
                             <h5 class="card-subtitle mb-3"><strong>Personal Information</strong></h5>
                             <div class="info-block">
                                 <!-- Personal information details -->
-                                <p><strong>Full Name:</strong> {{ student.first_name }} {{student.middle_name}} {{student.last_name}}</p>
+                                <p><strong>Full Name:</strong> {{ student.first_name }} {{ student.middle_name }} {{ student.last_name }}</p>
                                 <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
                                 <p><strong>Gender:</strong> {{ student.gender }}</p>
                                 <p><strong>Citizenship Number:</strong> {{ student.citizenship_number }}</p>
@@ -98,7 +95,7 @@
                                 <p><strong>School Name:</strong> {{ student.secondary_school_name }}</p>
                                 <p><strong>Year of Completion:</strong> {{ student.secondary_year_completion }}</p>
                                 <p><strong>CGPA:</strong> {{ student.secondary_cgpa }}</p>
-                                <p><strong>District:</strong> {{ student.secondary_district }}</p>
+                                <p><strong>Address:</strong> {{ student.secondary_municipality }}-{{ student.secondary_wardno }}, {{ student.secondary_district }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -108,7 +105,8 @@
                                 <p><strong>College Name:</strong> {{ student.higher_secondary_school_name }}</p>
                                 <p><strong>Year of Completion:</strong> {{ student.higher_secondary_year_completion }}</p>
                                 <p><strong>CGPA:</strong> {{ student.higher_secondary_cgpa }}</p>
-                                <p><strong>District:</strong> {{ student.higher_secondary_district }}</p>
+                                <p><strong>Address:</strong> {{ student.higher_secondary_municipality }}-{{ student.higher_secondary_wardno }}, {{ student.higher_secondary_district }}</p>
+                                <p><strong>Faculty:</strong> {{ student.higher_secondary_faculty }}</p>
                             </div>
                         </div>
                     </div>
@@ -119,8 +117,8 @@
                             <div class="info-block">
                                 <!-- Permanent address details -->
                                 <p><strong>Province:</strong> {{ student.permanent_province }}</p>
-                                <p><strong>Address:</strong> {{student.permanent_municipality}}-{{student.permanent_ward_no}},{{student.permanent_district}}</p>
-                                <p><strong>Zip Code:</strong> {{ student.permanent_zip_code }}</p>
+                                <p><strong>Address:</strong> {{ student.permanent_municipality }}-{{ student.permanent_ward_no }}, {{ student.permanent_district }}</p>
+                                <p><strong>Tole:</strong> {{ student.permanent_tole }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -128,14 +126,14 @@
                             <div class="info-block">
                                 <!-- Temporary address details -->
                                 <p><strong>Province:</strong> {{ student.temporary_province }}</p>
-                                <p><strong>Address:</strong> {{student.temporary_municipality}}-{{student.temporary_ward_no}},{{student.temporary_district}}</p>
-                                <p><strong>Zip Code:</strong> {{ student.temporary_zip_code }}</p>
+                                <p><strong>Address:</strong> {{ student.temporary_municipality }}-{{ student.temporary_ward_no }}, {{ student.temporary_district }}</p>
+                                <p><strong>Tole:</strong> {{ student.temporary_tole }}</p>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div class="signature-section">
-                        <img src="/media/uploads/signature/S_{{ student.form_name }}" alt="Student Signature" class="img-fluid rounded mb-3" style="height:100px;width:100px;">
+                        <img src="../media/uploads/signature/S_{{ student.form_name }}.jpg" alt="Student Signature" class="img-fluid rounded mb-3" style="height:100px;width:100px;">
                         <p class="text-muted">Student Signature</p>
                     </div>
                     <hr>
@@ -165,5 +163,4 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
 {% endblock body %}
