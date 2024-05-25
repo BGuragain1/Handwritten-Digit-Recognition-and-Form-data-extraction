@@ -2,6 +2,8 @@ from ScanForm.models import StudentDetails
 import os
 from django.utils import timezone
 import json
+from django.db.models import Q
+
 
 def insertData(data):
     parsed_data = json.loads(data)
@@ -186,6 +188,10 @@ def getAll():
 
 def getSpecified(id):
     data = StudentDetails.objects.get(id = id)
+    return data
+
+def searchSpecificStudent(name):
+    data = StudentDetails.objects.filter(Q(first_name__icontains=name))
     return data
 
 def approve(name):

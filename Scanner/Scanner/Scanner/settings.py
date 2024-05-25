@@ -144,3 +144,4 @@ MEDIA_URL1 = '/media/uploads/signature/'
 
 MEDIA_ROOT2 = os.path.join(BASE_DIR, 'media/uploads/photo')
 MEDIA_URL2 = '/media/uploads/photo/'
+

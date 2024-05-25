@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"> {% endcomment %}
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        /* Stylish Navbar */
         .navbar {
-            background-color: #e0e0e0; /* Subtle gray tone */
+            background-color: #e0e0e0; 
         }
 
-        /* Refined Footer */
         footer {
-            position: flex;
             left: 0;
             bottom: 0;
             width: 100%;
@@ -29,33 +29,31 @@
             color: white; 
         }
 
-        /* Sophisticated Profile Section */
         .profile-section {
-            margin-right: 30px; /* Spaced margin */
-            padding: 5px; /* Subtle padding */
-            border: 1px solid #ddd; /* Delicate border */
-            border-radius: 4px; /* Rounded edges */
+            margin-right: 30px; 
+            padding: 5px; 
+            border: 1px solid #ddd;
+            border-radius: 4px; 
         }
 
-        /* College Admission System Text */
         .college-admission-text {
-            font-family: "Times New Roman", Times, serif; /* Classic font */
-            font-size: 24px; /* Smaller font size */
-            color: white; /* Dark gray text */
+            font-family: "Times New Roman", Times, serif; 
+            font-size: 24px; 
+            color: white; 
         }
         .navbar-brand {
-            font-size: 2rem; /* Adjust brand name size */
-            color: #007bff; /* Change brand name color */
+            font-size: 2rem; 
+            color: #007bff; 
         }
         
         .profile-section {
-            background-color: #f8f9fa; /* Add subtle background */
-            border-radius: 0.5rem; /* Increase border radius */
+            background-color: #f8f9fa; 
+            border-radius: 0.5rem;
         }
         
         footer {
-            background-color: #343a40; /* Darker footer background */
-            color: #fff; /* White text */
+            background-color: #343a40; 
+            color: #fff; 
         }
     </style>
 </head>

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}About{% endblock title %}
+{% block body %}
+<style>
+    footer{
+        position: flex;
+    }
+    .about-section {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .about-section h1 {
+        color: #2c3e50;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+    .about-section p {
+        color: #34495e;
+        font-size: 1.2em;
+        line-height: 1.6em;
+    }
+    .about-section h2 {
+        color: #2980b9;
+        font-size: 2em;
+        margin-top: 20px;
+    }
+    .about-section ul, .about-section ol {
+        margin-left: 20px;
+        color: #34495e;
+        font-size: 1.2em;
+    }
+    .about-section li {
+        margin-bottom: 10px;
+    }
+    .contact-info {
+        margin-top: 20px;
+        color: #34495e;
+        font-size: 1.2em;
+    }
+    .contact-info p {
+        margin: 5px 0;
+    }
+</style>
+
+<div class="about-section">
+    <h1>About Handwritten Digit/Character Recognition and Form Data Extraction</h1>
+    <p>Welcome to our innovative project designed to streamline the college admission process through advanced technology. Our system allows users to manage student admissions with ease by providing both manual and automated form handling capabilities. Below, you'll find detailed information about our project and guidelines for its proper use.</p>
+
+    <h2>Project Overview</h2>
+    <p>Our project focuses on the following key functionalities:</p>
+    <ul>
+        <li><strong>Manual Form Entry:</strong> Users can manually input student information for college admissions.</li>
+        <li><strong>Image-Based Form Upload:</strong> Users can upload images of admission forms. The system recognizes and extracts handwritten characters and digits from these forms.</li>
+        <li><strong>Student Information Management:</strong> Users can view, edit, update, and delete student details easily.</li>
+    </ul>
+
+    <h2>Guidelines for Using the System</h2>
+    <p>To ensure the system works optimally, please follow these steps carefully when uploading forms:</p>
+    <ol>
+        <li>Ensure the photo of the form includes the entire form page without any background visible. The form should fit within the photo frame without any part of the form being cut off.</li>
+        <li>Upload the form pages in the correct sequence: the first page should be uploaded first, followed by the second page.</li>
+        <li>The characters in the form should be written in capital letters for better recognition accuracy.</li>
+        <li>Please note that it may take some time for the system to upload the photo and extract the characters.</li>
+        <li>After the extraction process, review the extracted information carefully. The system may not always achieve 100% accuracy, and manual corrections might be necessary.</li>
+    </ol>
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions or need further assistance, please don't hesitate to contact our support team. We're here to help you make the most of this innovative solution for your college admission needs.</p>
+    <div class="contact-info">
+        <p><strong>Email:</strong> support@collegeadmissionsystem.com</p>
+        <p><strong>Phone:</strong> +977-9874563212</p>
+    </div>
+</div>
+{% endblock body %}

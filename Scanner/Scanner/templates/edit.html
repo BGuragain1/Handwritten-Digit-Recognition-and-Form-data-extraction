@@ -29,9 +29,8 @@ h3 {
         {% csrf_token %}
         <h3>Forms</h3>
         <div class="form-section">
-            <img src="../media/uploads/form_pic/{{student.form_name}}_1.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:600px;width:500px;">
-            <img src="../media/uploads/form_pic/{{student.form_name}}_2.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:600px;width:500px;">
-            <p class="text-muted">Forms</p>
+            <img src="../media/uploads/form_pic/{{ student.form_name }}_1.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:600px;width:500px;" onerror="this.style.display='none';">
+            <img src="../media/uploads/form_pic/{{ student.form_name }}_2.jpg" alt="Student Photo" class="img-fluid rounded mb-3" style="height:600px;width:500px;" onerror="this.style.display='none';">
         </div>
         <h3>General Information</h3>
         <div class="form-row">

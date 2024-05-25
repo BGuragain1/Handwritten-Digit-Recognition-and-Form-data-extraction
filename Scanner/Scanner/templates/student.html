@@ -25,7 +25,7 @@ h3 {
         {% csrf_token %}
         <div class="form-group">
             <label for="photo">Upload Passport-sized Photo</label>
-            <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*">
+            <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*" required>
         </div>
         <!-- General Information -->
         <h3>General Information</h3>
@@ -223,7 +223,7 @@ h3 {
         <!-- Signature Upload -->
         <div class="form-group">
             <label for="signature">Upload Signature</label>
-            <input type="file" class="form-control-file" id="signature" name="signature" accept="image/*">
+            <input type="file" class="form-control-file" id="signature" name="signature" accept="image/*" required>
         </div>
         
         <button type="submit" class="btn btn-primary">Submit</button>

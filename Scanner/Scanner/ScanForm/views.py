@@ -11,6 +11,8 @@ from django.utils.crypto import get_random_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
 from binascii import Error as BinasciiError
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.mail import send_mail
 from Form_Detection import app
 from . import utils
@@ -119,7 +121,29 @@ def logout_view(request):
 
 @login_required
 def homePage(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('homePage')  
+        else:
+            if 'old_password' in form.errors:
+                messages.error(request, 'Old password is incorrect.')
+                return redirect('settings')  
+            elif 'new_password2' in form.errors:
+                messages.error(request, 'The new passwords do not match.')
+                return redirect('settings')  
+            else:
+                messages.error(request, 'Please correct the error below.')
+                return redirect('settings')  
+           
     return render(request, "home.html")
+
+@login_required
+def settings(request):
+    return render(request,"settings.html")
 
 @login_required
 def addStudents(request):
@@ -216,6 +240,12 @@ def searchDetails(request):
         id = request.POST.get("edit")
         student = utils.getSpecified(id)
         return render(request,"edit.html",{"student":student})
+    elif "search" in request.POST:
+        name = request.POST.get("search")     
+        if name!="":
+            data = utils.searchSpecificStudent(name)
+            if not data.exists():
+                messages.error(request, 'No data Found')
     elif "update" in request.POST:
         id = request.POST.get("update")
         datas = {
@@ -270,6 +300,7 @@ def searchDetails(request):
         json_data = json.dumps(datas)
         utils.updateData(json_data,id)
         messages.success(request, 'Updated Successfully')
+    
     return render(request,"search.html",{"students":data})
 
 @login_required
@@ -277,6 +308,10 @@ def viewDetails(request):
     id = request.POST.get("detail")
     data = utils.getSpecified(id)
     return render(request,"details.html",{"student":data})
+
+@login_required
+def about(request):
+    return render(request,"about.html")
 
 @login_required
 def forms(request):

@@ -15,5 +15,7 @@ urlpatterns = [
     path('student',views.addStudents,name="addStudents"),
     path('formPhoto',views.uploadForms, name="uploadForms"),
     path('details',views.viewDetails,name="viewDetails"),
+    path('about',views.about,name="about"),
+    path('settings',views.settings,name="settings"),
     path('activate_account/', views.activate_account, name='activate_account'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL1, document_root=settings.MEDIA_ROOT1)+ static(settings.MEDIA_URL2, document_root=settings.MEDIA_ROOT2)

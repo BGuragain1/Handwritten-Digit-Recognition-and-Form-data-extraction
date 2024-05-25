@@ -53,10 +53,13 @@
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h2 class="mb-4">Search Students</h2>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search students..." aria-label="Search students" aria-describedby="button-search">
-                <button class="btn btn-primary" type="button" id="button-search">Search</button>
-            </div>
+            <form method="post" action='{% url "searchDetails" %}'>
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search students..." name="search">
+                    <button class="btn btn-primary" type="submit" id="button-search">Search</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="row">
