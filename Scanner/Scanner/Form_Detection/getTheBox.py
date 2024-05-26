@@ -42,7 +42,7 @@ class getTheWords1():
             last_image = cropped_image[y:y+h, x:x+w]
             final_image = pw.pre_process_seperated_img(last_image)
           
-            if (np.sum(final_image) > 35000):
+            if (np.sum(final_image) > 10000):
                 word = pw.image_prediction(final_image)
                 final_word.append(word)
                 # plt.imshow(final_image)
@@ -163,7 +163,14 @@ class getTheWords1():
                 # plt.imshow(final_image,cmap="gray")
                 # plt.show()
 
-        return ''.join(final_word)
+        ans = ''.join(final_word)
+        dob_str = str(ans)
+        year = dob_str[4:8]
+        month = dob_str[2:4]
+        day = dob_str[:2]
+        formatted_dob = f"{day}/{month}/{year}"
+        return formatted_dob
+
         
     def getGender(self):
         final_word = []

@@ -73,7 +73,7 @@
                         <br>
                         <p><strong>Phone Number:</strong> {{ student.phone_number }}</p>
                         <p><strong>Course:</strong> {{ student.course }}</p>
-                        <p><strong>Form Uploaded:</strong> {{ student.uploaded_time }}</p>
+                        <p><strong>Form Uploaded:</strong> {{ student.uploaded_time|timesince }} ago</p>
                     </div>
                     <div class="view-details-button">
                         <form method="post" action="/details">

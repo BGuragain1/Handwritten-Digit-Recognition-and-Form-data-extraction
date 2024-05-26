@@ -3,11 +3,9 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-model = tf.keras.models.load_model('Form_Detection/model/my_model.h5')
 letter_model = tf.keras.models.load_model('Form_Detection/model/letters_model.h5')
 digit_model = tf.keras.models.load_model('Form_Detection/model/digit_model.h5')
 
-arr_both = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "d", "e", "f", "g", "h", "n", "q", "r", "t"]
 arr_digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 arr_letters = ["","A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 

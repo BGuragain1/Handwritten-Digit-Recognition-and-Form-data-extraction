@@ -91,7 +91,6 @@ def send_verification_email(request, user):
     send_mail(mail_subject, message, 'guragainbigyan123@gmail.com', [to_email],html_message=message)
 
 def activate_account(request):
-
     uidb64 = request.GET.get('uid')
     token = request.GET.get('token')
 
@@ -122,17 +121,17 @@ def logout_view(request):
 @login_required
 def homePage(request):
     if request.method == "POST":
-        form = PasswordChangeForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            user = form.save()
+        formz = PasswordChangeForm(user=request.user, data=request.POST)
+        if formz.is_valid():
+            user = formz.save()
             update_session_auth_hash(request, user)  
             messages.success(request, 'Your password was successfully updated!')
             return redirect('homePage')  
         else:
-            if 'old_password' in form.errors:
+            if 'old_password' in formz.errors:
                 messages.error(request, 'Old password is incorrect.')
                 return redirect('settings')  
-            elif 'new_password2' in form.errors:
+            elif 'new_password2' in formz.errors:
                 messages.error(request, 'The new passwords do not match.')
                 return redirect('settings')  
             else:
@@ -254,7 +253,7 @@ def searchDetails(request):
             'last_name': request.POST.get('last_name'),
             'email': request.POST.get('email'),
             'phone_number': request.POST.get('phone_number'),
-            'dob': request.POST.get('dob'),
+            'dob': request.POST.get('date_of_birth'),
             'gender': request.POST.get('gender'),
             'citizenship_number': request.POST.get('citizenship_number'),
             'course': request.POST.get('course'),
@@ -275,8 +274,8 @@ def searchDetails(request):
             },
             'higher_secondary_school': {
                 'name': request.POST.get('higher_secondary_school_name'),
-                'year_completion': request.POST.get('higherSecondaryYearCompletion'),
-                'cgpa': request.POST.get('higherSecondaryCGPA'),
+                'year_completion': request.POST.get('higher_secondary_year_completion'),
+                'cgpa': request.POST.get('higher_secondary_cgpa'),
                 'faculty': request.POST.get('higherSecondaryfaculty'),
                 'district': request.POST.get('higherSecondaryDistrict'),
                 'municipality': request.POST.get('higherSecondaryMunicipality'),
@@ -320,8 +319,10 @@ def forms(request):
             image1 = request.FILES["form1"]
             image2 = request.FILES["form2"]
             image_name = np.random.rand()
-            image_path1 = os.path.join(settings.MEDIA_ROOT, f"{image_name}_1.jpg")
-            image_path2 = os.path.join(settings.MEDIA_ROOT, f"{image_name}_2.jpg")
+
+            # media_root = settings.MEDIA_ROOT
+            image_path1 = os.path.join("/home/bigyan1/Desktop/Scanner/Scanner/media/uploads/form_pic", f"{image_name}_1.jpg")
+            image_path2 = os.path.join("/home/bigyan1/Desktop/Scanner/Scanner/media/uploads/form_pic", f"{image_name}_2.jpg")
 
             with open(image_path1, 'wb') as f1, open(image_path2, 'wb') as f2:
                 for chunk1, chunk2 in zip(image1.chunks(), image2.chunks()):
@@ -332,12 +333,12 @@ def forms(request):
             utils.insertFormData(data,image_name,request.user.id)        
             return redirect("searchDetails")
         
-        elif "save" in request.POST:
-            return render(request,"uploadForm.html")
+        # elif "save" in request.POST:
+        #     return render(request,"uploadForm.html")
             
-        elif "cancel" in request.POST:
-            utils.deleteForm(request.POST.get("cancel"))
-            return render(request,"uploadForm.html")
+        # elif "cancel" in request.POST:
+        #     utils.deleteForm(request.POST.get("cancel"))
+        #     return render(request,"uploadForm.html")
 
         elif "delete" in request.POST:
             name = request.POST.get("delete")

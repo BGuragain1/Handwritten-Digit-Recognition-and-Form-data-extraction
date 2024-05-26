@@ -159,31 +159,36 @@ def deleteClient(id):
     client = StudentDetails.objects.get(id=id)
     os.remove("media/uploads/signature/S_"+client.form_name+".jpg")
     os.remove("media/uploads/photo/P_"+client.form_name+".jpg")
-    os.remove("media/uploads/form_pic/"+client.form_name+"_1.jpg")
-    os.remove("media/uploads/form_pic/"+client.form_name+"_2.jpg")
+    try:
+        os.remove("media/uploads/form_pic/"+client.form_name+"_1.jpg")
+        os.remove("media/uploads/form_pic/"+client.form_name+"_2.jpg")
+    except FileNotFoundError:
+        pass
     client.delete()
     return True  
 
-def deleteForm(name):
-    print(name)
-    client = StudentDetails.objects.get(form_name=name)
-    os.remove("media/uploads/signature/S_"+name+".jpg")
-    os.remove("media/uploads/photo/P_"+name+".jpg")
-    os.remove("media/uploads/form_pic/"+name+"_1.jpg")
-    os.remove("media/uploads/form_pic/"+name+"_2.jpg")
-    client.delete()
-    return True  
+# def deleteForm(name):
+#     client = StudentDetails.objects.get(form_name=name)
+#     os.remove("media/uploads/signature/S_"+name+".jpg")
+#     os.remove("media/uploads/photo/P_"+name+".jpg")
+#     try:
+#         os.remove("media/uploads/form_pic/"+name+"_1.jpg")
+#         os.remove("media/uploads/form_pic/"+name+"_2.jpg")
+#     except FileNotFoundError:
+#         pass
+#     client.delete()
+#     return True  
 
-def getForms(id_value):
-    form_list = StudentDetails.objects.filter(user_id=id_value,status="pending")
-    return form_list
+# def getForms(id_value):
+#     form_list = StudentDetails.objects.filter(user_id=id_value,status="pending")
+#     return form_list
 
-def getDetails(name):
-    form_list = StudentDetails.objects.get(form_name=name)
-    return form_list
+# def getDetails(name):
+#     form_list = StudentDetails.objects.get(form_name=name)
+#     return form_list
 
 def getAll():
-    data = StudentDetails.objects.all()
+    data = StudentDetails.objects.all().order_by('-uploaded_time')
     return data
 
 def getSpecified(id):
@@ -194,8 +199,8 @@ def searchSpecificStudent(name):
     data = StudentDetails.objects.filter(Q(first_name__icontains=name))
     return data
 
-def approve(name):
-    client = StudentDetails.objects.get(form_name=name)
-    client.status = "approved"
-    client.save()
-    return
+# def approve(name):
+#     client = StudentDetails.objects.get(form_name=name)
+#     client.status = "approved"
+#     client.save()
+#     return
